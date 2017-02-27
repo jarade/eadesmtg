@@ -1,0 +1,139 @@
+	html{
+		height: 100%;
+	}
+	body {
+		margin: 0;
+		height: 100%;
+	}
+	.navContent{
+		margin: 0 10px;
+		padding: 0;
+		margin-left: auto;
+	}
+	.wrap{
+		min-height: 70%;
+		padding-bottom: 15px;
+	}
+	#top{
+	    background-color: #835C3B;
+	    margin: 0;
+	}
+	#mytopnav, #mytoptitle{
+		list-style-type: none;
+	    margin: 0;
+	    padding: 0;
+	    overflow: hidden;
+	}
+	#mytoptitle{
+		width: 100%;
+		text-align: left;
+	}
+	#mytopnav{
+	    width: 100%;
+	    text-align: right;
+	}
+	#mytopnav li, #mytoptitle li{
+		display: inline-block;
+		vertical-align: middle;
+		text-align: center;
+	}
+	#mytopnav li{
+		cursor: pointer;
+	}
+	#mytoptitle li, #mytopnav li a, .pull-left button{
+	    display: block;
+	    color: white;
+	    min-height: 20px;
+	    line-height: 20px;
+	  	margin: 10px 10px; 
+	    text-decoration: none;
+	}
+	#mytoptitle li{
+		font-size: 20px;
+		font-weight: bold;
+		padding-left: 15px;
+	}
+	#mytopnav li:hover:not(.active), 
+	.pull-left:hover:not(:active){
+		background-color: grey;
+		color: white;
+		text-decoration: none;
+	}
+	#mytoptitle:hover{
+		background-color: #835C3B;
+	}
+	.pull-left button:visited{
+		color: white;
+	}
+	#mytopnav .active{
+		background-color: #800000;
+	}
+	.open{
+		background-color: #800000;
+		color: white;
+	}
+	.dropdown-menu{
+		background-color: #835C3B;
+		margin: 0;
+		padding: 0;
+	}
+	.btn-color{
+		background-color: #835C3B;
+		color: white;
+	}
+	.btn-color:hover{
+		background-color: #800000;
+		color: white;
+	}
+	a, .btn-link{
+		color: #800000;
+	}
+	.hiddenHeadings{
+		text-indent: 5px;
+		display: inline-block;
+	}
+	footer{
+		padding-top: 1%;
+		min-height: 30%;
+		background-color: #835C3B;
+	}
+	hr{
+	    border-style: inset;
+	    border-width: 1px;
+		color: #800000;
+	}
+	footer a{
+		text-decoration: underline;
+	}
+	footer a, footer p{
+		color: white;
+		font-size: 16px;
+	}
+	footer a:hover{
+		color: #800000;
+	}
+	h5{
+		color: #800000;
+		font-size: 20px;
+	}
+	.input-lg{
+		height: 40px;
+	}
+	@media screen and (min-width: 768px){
+		#titlediv{
+			position: absolute;
+			left: 0;
+		}
+	}
+	@media screen and (max-width: 480px){
+		#top-links, #titlediv{
+			float: none !important;
+	
+		}
+		#mytopnav{
+			text-align: center;
+		}
+		.hiddenHeadings{
+			display: none;
+		}
+	}
