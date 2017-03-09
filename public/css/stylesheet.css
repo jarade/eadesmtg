@@ -181,9 +181,13 @@
 		text-decoration: none;
 	}
 	.playerDiv{
+		max-width: 300px;
 		border-style: dotted;
 		border-width: 1px;
 		border-color: black;
+	}
+	.playerDiv input{
+		max-width: 100%;
 	}
 	@media screen and (min-width: 768px){
 		#titlediv{

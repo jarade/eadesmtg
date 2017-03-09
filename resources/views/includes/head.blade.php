@@ -27,4 +27,3 @@
 <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
 
 <link rel="stylesheet" href="{{ asset('css/stylesheet.css') }}" type="text/css"> 
-

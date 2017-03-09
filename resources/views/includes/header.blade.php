@@ -19,7 +19,7 @@
         @php 
             $taction = 'life';
         @endphp
-        <li id="applink" class="{{ Request::is('life/*') ? 'active' : '' }}"><a href="" onclick="lifeCounter('{{url($taction)}}')" class="fa fa-heart"><strong class="hiddenHeadings">Life Counter App</strong></a></li>
+        <li id="applink" class="{{ Request::is('life*') ? 'active' : '' }}"><a href="" onclick="lifeCounter('{{url($taction)}}')" class="fa fa-heart"><strong class="hiddenHeadings">Life Counter App</strong></a></li>
       </ul>
     </div>
   </div>

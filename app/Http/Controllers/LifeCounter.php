@@ -99,7 +99,34 @@ class LifeCounter extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return ($id);
+        $player = Player::find($request->player["playerID"]);
+        
+        switch($request->change){
+            case 0: // Change Name
+                $player->playerName = $request->player["playerName"];
+                $player->save();
+                break;
+            case 1: // Change Life
+                $player->playerLife = $request->player["playerLife"];
+                $player->save();
+                break;
+            case 2: break; // all life
+            case 3: // add player
+                $player = new Player;
+
+                $player->playerName = "player" . (1+$numPlayer);
+                $player->playerLife = 20;
+                $player->sessionID = $session->sessionID;
+
+                $player->save();
+                break;
+            case 4: // remove player
+                $player->delete();
+                break;
+
+        }
+        return 'yay';
     }
 
     /**
