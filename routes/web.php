@@ -10,10 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Session;
 
-// index
+// Home
 Route::get('/', function () {
-    return view('child');
+    return view('home');
 });
 
 // Contact Us
@@ -21,8 +22,36 @@ Route::get('contact', function () {
 	return view('contact');
 });
 
+
+/*Route::get('/db', function(){
+	return App\Session::all();
+	//return DB::select('show tables;');
+});*/
+
+// Products
 Route::get('product', 'product@index');
 
-Route::get('/db', function(){
-	return DB::select('show tables;');
+// Life Counter
+Route::resource('life', 'LifeCounter');
+
+//Route::get('life', 'LifeCounter@index');
+
+//Route::post('/createSession', 'LifeCounter@create');
+
+Route::post('/checkSession', function(){
+	session_start();
+	if(isset($_SESSION['session'])){
+		unset($_SESSION['session']);
+	}
+
+	if(Request::ajax()){
+		$session = App\Session::select('sessionID', 'password')
+							->where('sessionID', $_POST['id'])
+							->get();
+		
+		
+	    $_SESSION['session'] = $_POST['id'];
+	
+		return url('life');
+	}
 });

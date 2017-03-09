@@ -16,8 +16,10 @@
         <li id="cartlink" class="{{ Request::is('cart') ? 'active' : '' }}"><a href="" title="Shopping Cart" class="fa fa-shopping-cart"><strong class="hiddenHeadings">Shopping Cart</strong></a></li>
 
         <li id="checklink" class="{{ Request::is('checkout') ? 'active' : '' }}"><a href="" title="Checkout"><i class="fa fa-share"></i><strong class="hiddenHeadings">Checkout</strong></a></li>
-     
-        <li id="applink" class="{{ Request::is('lifeApp') ? 'active' : '' }}"><a href="" class="fa fa-heart"><strong class="hiddenHeadings">Life Counter App</strong></a></li>
+        @php 
+            $taction = 'life';
+        @endphp
+        <li id="applink" class="{{ Request::is('life/*') ? 'active' : '' }}"><a href="" onclick="lifeCounter('{{url($taction)}}')" class="fa fa-heart"><strong class="hiddenHeadings">Life Counter App</strong></a></li>
       </ul>
     </div>
   </div>

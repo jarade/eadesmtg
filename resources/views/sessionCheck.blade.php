@@ -1,12 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'EadesMTG Contact Us')
+@section('title', 'EadesMTG')
 
 @section('content')
-    <div class='content container'>
+	@php $turl =  url('contact') @endphp
+	<?php
+		use App\Session;
+		use Illuminate\Http\Request;
+
+		$check = App\Session::CheckSessionID($_GET['sesID']);
+		echo $check;
+
+		if($check == 1){
+			header('Location: ' . $turl, true, 301);
+			exit();
+		}
+	?>
+	<div class='content container'>
       <form class="form-horizontal">
         <fieldset>
-          <legend>Contact Form</legend>
+          <legend>Login Form</legend>
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-name">Name: </label>
             <div class="col-sm-10">

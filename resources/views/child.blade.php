@@ -3,5 +3,5 @@
 @section('title', 'EadesMTG')
 
 @section('content')
-    <p>This is my body content.</p>
+	<p>Content</p>
 @endsection

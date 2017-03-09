@@ -113,16 +113,91 @@
 		color: #800000;
 	}
 	h5{
-		color: #800000;
+		color: white;
 		font-size: 20px;
 	}
 	.input-lg{
 		height: 40px;
 	}
+	.homeWrap{
+		width: 100%;
+		left: 5px;
+	}
+	.sidebar{
+		width: 300px;
+		padding: 10px;
+		float: left;
+	}
+	.sidebar ul{
+		text-indent: 15px;
+	}
+	.mainContent{
+		margin-left:400px;
+		padding:auto;
+		max-width: 800px;
+	}
+	#search input, #search span{
+		height: auto;
+	}
+	.jqueryconfirm{
+		background: #835C3B;
+	}
+	.jqueryconfirm:active{
+		background: #835C3B;
+	}
+	.jqueryconfirm:hover{
+		background: #800000;
+	}
+	.subNav{
+		background-color: #835C3B;
+	}
+	.subNav ul{
+		list-style-type: none;
+	    margin: 0;
+	    padding: 0 10px;
+	    overflow: hidden;
+	    text-align: right;
+	}
+	.subNav ul li{
+		display: inline-block;
+		vertical-align: middle;
+		text-align: center;
+	}
+	.subNav ul li a{
+		display: block;
+	    color: white;
+	    min-height: 18px;
+	    line-height: 18px;
+	  	margin: 5px 5px; 
+	    text-decoration: none;
+	}
+
+	.subNav ul .active{
+		background-color: #800000;
+	}
+	.subNav li:hover:not(.active){
+		background-color: grey;
+		color: white;
+		text-decoration: none;
+	}
+	.playerDiv{
+		border-style: dotted;
+		border-width: 1px;
+		border-color: black;
+	}
 	@media screen and (min-width: 768px){
 		#titlediv{
 			position: absolute;
 			left: 0;
+		}
+	}
+	@media screen and (max-width: 768px){
+		.sidebar{
+			display: none;
+		}
+		.mainContent{
+			margin-left:auto;
+			padding: 10px;
 		}
 	}
 	@media screen and (max-width: 480px){
