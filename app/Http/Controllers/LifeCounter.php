@@ -99,7 +99,6 @@ class LifeCounter extends Controller
      */
     public function update(Request $request, $id)
     {
-        return ($id);
         $player = Player::find($request->player["playerID"]);
         
         switch($request->change){

@@ -3,6 +3,7 @@
 @section('title', 'EadesMTG Products')
 
 @section('content')
+    <div class='content container'>
     <h1>Search</h1>
     <form>
     	<div class="row">
@@ -40,9 +41,70 @@
 		    <div class="pull-right">
 		    	<input type="submit" value="Search"/>
 		    </div>
-		    <div>
-		    Results
-		    </div>
 	    </div>
     </form>
+    <div id='results' class='row form-horizontal'>
+    	<h2 class='col-sm-12'>Results</h2>
+    	<form class='product col-sm-4 text-center'>
+    		<div class='row'>
+    			<legend class='col-sm-12'>Always Watching</legend>
+    		</div>
+    		<div class='row'>
+    			<img class='productImage' src="{{ asset('img/products/alwaysWatching.jpg') }} "/>
+    		</div>
+    		<div class='row'>
+    			<p class='col-sm-6'>Available: 5</p>
+    			<p class='col-sm-6'>$00.00</p>
+    		</div>
+    		<div class='row'>
+    			<input class='btn btn-color productSubmit' type='submit' name='add' value='Add to Cart' />
+    		</div>
+    	</form>
+    	<form class='product col-sm-4 text-center'>
+    		<div class='row'>
+    			<legend class='col-sm-12'>Always Watching</legend>
+    		</div>
+    		<div class='row'>
+    			<img class='productImage' src="{{ asset('img/products/alwaysWatching.jpg') }} "/>
+    		</div>
+    		<div class='row'>
+    			<p class='col-sm-6'>Available: 5</p>
+    			<p class='col-sm-6'>$00.00</p>
+    		</div>
+    		<div class='row'>
+    			<input class='btn btn-color productSubmit' type='submit' name='add' value='Add to Cart' />
+    		</div>
+    	</form>
+    	<form class='product col-sm-4 text-center'>
+    		<div class='row'>
+    			<legend class='col-sm-12'>Always Watching</legend>
+    		</div>
+    		<div class='row'>
+    			<img class='productImage' src="{{ asset('img/products/alwaysWatching.jpg') }} "/>
+    		</div>
+    		<div class='row'>
+    			<p class='col-sm-6'>Available: 5</p>
+    			<p class='col-sm-6'>$00.00</p>
+    		</div>
+    		<div class='row'>
+    			<input class='btn btn-color productSubmit' type='submit' name='add' value='Add to Cart' />
+    		</div>
+    	</form>
+    	<form class='product col-sm-4 text-center'>
+    		<div class='row'>
+    			<legend class='col-sm-12'>Always Watching</legend>
+    		</div>
+    		<div class='row'>
+    			<img class='productImage' src="{{ asset('img/products/alwaysWatching.jpg') }} "/>
+    		</div>
+    		<div class='row'>
+    			<p class='col-sm-6'>Available: 5</p>
+    			<p class='col-sm-6'>$00.00</p>
+    		</div>
+    		<div class='row'>
+    			<input class='btn btn-color productSubmit' type='submit' name='add' value='Add to Cart' />
+    		</div>
+    	</form>
+    </div>
+    </div>
 @endsection

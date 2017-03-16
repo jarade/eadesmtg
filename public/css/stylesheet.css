@@ -189,6 +189,53 @@
 	.playerDiv input{
 		max-width: 100%;
 	}
+	.productLegend{
+		text-indent: 15px !important;
+	}
+
+
+	.selectBox {
+	  position: relative;
+	}
+	.overSelect {
+	  position: absolute;
+	  left: 0;
+	  right: 0;
+	  top: 0;
+	  bottom: 0;
+	}
+
+	#checkboxes {
+	  display: none;
+	  border: 1px #dadada solid;
+	}
+
+	#checkboxes label {
+	  display: block;
+	}
+
+	#checkboxes label:hover {
+	  background-color: #1e90ff;
+	}
+	.thumb {
+		height: 150px;
+		border: 1px solid #000;
+		margin: 10px 5px 0 0;
+	}
+	.product{
+		padding: 15px;
+		max-width: 400px;
+	}
+	.productSubmit{
+		margin: 0 auto;
+		min-width: 70%;
+	}
+	.productImage{
+		margin: 0 auto;
+		padding: 5px;
+		max-height: 250px; 
+		max-width: 250px;
+	}
 	@media screen and (min-width: 768px){
 		#titlediv{
 			position: absolute;
