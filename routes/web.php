@@ -32,6 +32,8 @@ Route::get('contact', function () {
 Route::resource('product', 'ProductController');
 // Life Counter
 Route::resource('life', 'LifeCounter');
+//Shopping Cart
+Route::resource('cart', 'CartController');
 
 //Route::get('life', 'LifeCounter@index');
 

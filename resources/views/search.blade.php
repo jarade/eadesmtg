@@ -5,52 +5,67 @@
 @section('content')
     <div class='content container'>
     <h1>Search</h1>
-    <form>
-    	<div class="row">
-	    	<div class="col-md-6">
-			    <label for="search">Search: </label> 
-			    <input type="text" name="search" placeholder="Enter your search..." />
-			    <br>
-			    <label for="searchIn"><input type="checkbox" name="searchIn"/> Search in product description</label>
-			   
-			    <br>
-			    <select name="type">
-			    	<option value="0" default>All</option>
-			    	<option value="1">Accessories</option>
-			    	<option value="2">Cards</option>
-			    </select>
-		    </div>
-		    <div class="col-md-6">
-			    accessory search
-			    <div>
-			    <select>
-			    	<option>type</option>
-			    </select>
-			    </div>
-
-			    Card search
-			    <div>
-				    <select>
-				   		<option>Color</option>
-				    </select>
-				    <select>
-				   		<option>Edition</option>
+    <form class='form-horizontal text-center'>
+    	<div class="row col-sm-12">
+	    	<div class="col-sm-6">
+	    		<div class='row col-sm-11'>
+				    <label class='control-label' for="search">Search: </label> 
+				    <input class='form-control' type="text" id='search' name="search" placeholder="Enter your search..." />
+				    <br>
+				    <label class='control-label' for="searchIn">
+				    	<input type="checkbox" id='searchIn' name="searchIn"/> Search in product description
+				    </label>
+			   	</div>
+			    <div class='row col-sm-11'>
+				    <select class='form-control' name="type">
+				    	<option value="0" default>All Product Types</option>
+				    	<option value="1">Accessories Only</option>
+				    	<option value="2">Cards Only</option>
 				    </select>
 			    </div>
 		    </div>
-		    <div class="pull-right">
-		    	<input type="submit" value="Search"/>
+		    <div class="col-sm-6">
+		    	<div class='row col-sm-11'>
+				    accessory search
+				    <div>
+				    <select class='form-control'>
+				    	<option>type</option>
+				    </select>
+				    </div>
+			    </div>
+			    <div class='row col-sm-11'>
+				    Card search
+				    <div>
+					    <select class='form-control'>
+					   		<option>Color</option>
+					    </select>
+					    <select class='form-control'>
+					   		<option>Edition</option>
+					    </select>
+				    </div>
+			    </div>
 		    </div>
+	    </div>
+	    <div class='row col-sm-12'>
+	    	<br>
+	    	<input id='searchButton' class='btn btn-color col-sm-11' type="submit" value="Search"/>
 	    </div>
     </form>
     <div id='results' class='row form-horizontal'>
-    	<h2 class='col-sm-12'>Results</h2>
-            @php 
-                use App\Product;
-                $products = Product::all();
-            @endphp
+    	@php 
+            use App\Product;
+        @endphp
 
-            @each('includes.product', $products, 'product')
+    	@if (session('status'))
+    		<h2 class='col-sm-12'>Results</h2>
+		@else
+    		<h2 class='col-sm-12'>All Products</h2>
+            @each('includes.product', Product::all(), 'product')
+        @endif
+
+        	
+
+            
     </div>
     </div>
 @endsection

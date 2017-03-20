@@ -10,6 +10,9 @@ use App\CardType;
 use App\Product;
 use App\ProductImage;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use File;
+
 class ProductController extends Controller
 {
     /**
@@ -42,32 +45,56 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        /*$validator = Validator::make($request->all(),[
-            'productName' => Rule:unique('products')->where(function($query){
-                $query->where('productID', 'cardeditions.productID');
-            }),
-        ]);*/
-/*
-        if($validator->fails()){
-            return redirect('product/create')
-                            ->withErrors($validator)
-                            ->withInput();
-        }*/
-        $target_dir = asset('img/products');
-        $target_file = $request->images;
-        /*if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-        } else {
-            echo "Sorry, there was an error uploading your file.";
-        }*/
-        var_dump($target_file);
+        $message = array();
+
+        if(count($request->images) > 0){
+            $imagePath = public_path() . '\img\products\\';
+            $issue = false;
+            $images = array();
+
+            foreach($request->file('images') as $uploadedImage){
+                $fileName = $uploadedImage->getClientOriginalName();
+                
+                if (File::exists($imagePath . $fileName)){ 
+                    $issue = true;
+                    array_push($message, 'The image ' . $fileName . ' is already located in the products folder. Please check the folder and use a different name.');
+                }else{
+                    array_push($images, $uploadedImage);
+                }
+            }
+
+            if($issue){
+                return redirect('product/create')
+                    ->with('status', $message);  
+            }else{
+                foreach($images as $img){
+                    $fileName = $img->getClientOriginalName();
+                    $img->move($imagePath, $fileName);
+                }
+            }
+            array_push($message, 'Images have successfully been uploaded.');
+            return redirect('product')
+                ->with('status', $message);
+            /*
+            
+            if (File::exists($imagePath . $fileName)){   
+                return redirect('product/create')
+                    ->with('status', 'duplicate');  
+            }
+
+            $request->file('images')[0]->move($imagePath, $fileName);
+*/
+            //var_dump($request->file('images')[0]->getRealPath());
+            
+        }
+        var_dump($request->all());
         exit();
 
         $product = new Product;
         $product->productName = $request->productName;
         $product->productDescription = $request->description;
         $product->productPrice = $request->price;
-        $product->productQuantity = $request->quantity;
+        $product->productQuantity = $request->quantity; 
         $product->productType = $request->type;
 
         $product->save();

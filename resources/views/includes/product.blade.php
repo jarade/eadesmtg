@@ -1,5 +1,6 @@
 <form class='product col-sm-4 text-center'>
-	<a href='product/{{ $product->productID }}'><div class='row'>
+	<a href='product/{{ $product->productID }}'>
+	<div class='row'>
 		<legend class='col-sm-12'>{{ $product->productName }}</legend>
 		</div>
 		<div class='row'>

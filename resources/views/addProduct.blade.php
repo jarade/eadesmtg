@@ -51,7 +51,7 @@
 					$('#input-description').val(card[cardName].text);
 					$('#input-edition').attr('disabled', false);
 					$('#types').attr('disabled', false);
-
+					$('#input-type').val('Card').change();
 					var allTypes = [];
 
 					if(card[cardName].supertypes){
@@ -84,6 +84,15 @@
 	
 	<div class='content container'>
 		<h1>Add Product</h1>
+
+		@if (session('status'))
+    		<div class="alert alert-success">
+			@foreach (session('status') as $msg)
+        		<p> {{ $msg }} </p>
+    		@endforeach
+    		</div>
+		@endif
+
 		<form class='form-horizontal'>
 			<fieldset>
 				@php 
@@ -112,7 +121,7 @@
 		</form>
 
 		<br>
-		<form action='{{ url("product") }}' method='post' class="form-horizontal">
+		<form action='{{ url("product") }}' method='post' class="form-horizontal" files='true' enctype="multipart/form-data">
 		 {{ csrf_field() }}
 			<fieldset>
 				<legend class='productLegend'>Add Product Details</legend>
@@ -135,7 +144,14 @@
 					<label class="col-sm-2 control-label" for="input-type">Product Type: </label>
 					<div class="col-sm-10">
 						<select required name="type" id="input-type" class="form-control" >
+							<option default value=''>Select Type</option>
+							<option value="Binder">Binder</option>
 							<option value='Card'>Card</option>
+							<option value="Deckbox">Deckbox</option>
+							<option value='Dice'>Dice</option>
+							<option value='LifeCounter'>Life Counter</option>
+							<option value='PlayMats'>Playmat</option>
+							<option value="Sleeves">Sleeves</option>
 						</select>
 					</div>
 				</div>
@@ -178,7 +194,7 @@
 				<div class="form-group required">
 					<label class="col-sm-2 control-label" for="input-image">Images: </label>
 					<div class="col-sm-10">
-						<input type='file' name="images" id="input-image" class="form-control" accept='image/*' multiple />
+						<input type='file' name="images[]" id="input-image" class="form-control" accept='image/*' multiple />
 						<div id='imageList'>
 							<input type='text' name='imageList' id='imageSources' value='' class='hidden'/>
 						</div>
