@@ -25,10 +25,7 @@
     				<h3>Quantity</h3>
     			</div>
     		</div>
-    	
-    	
-            @each('includes.cartProduct', Product::all(), 'product')
-		
+			@each('includes.cartProduct', session()->get('products.cart'), 'session')
     	</form>
     </div>
 @endsection

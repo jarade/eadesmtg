@@ -33,8 +33,31 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        if(session()->has('products.cart')){
+            $collection = collect(session()->get('products.cart'));
+
+            if(!($collection->contains('id', $request->productID))){
+                $request->session()->push('products.cart', ['id' => $request->productID , 'quantity' => $request->toBuy]);
+            }else{
+
+                foreach(session()->get('products.cart') as $item){
+                    if($item['id'] == $request->productID){
+                       /* $cart = session()->pull('products.cart');
+                        array_forget($cart, 'id.' . $item['id']);
+
+                        session()->push('products.cart', $cart);*/
+                        return back()->with('added', 'Sccessfully updated quantity of product.');
+                    }
+                }
+
+                /*$request->session()->push('products.cart', ['id' => $request->productID , 'quantity' => $request->toBuy]);
+                return back()->with('added', 'Successfully updated quantity of product.');*/
+            }
+        }else{
+            $request->session()->push('products.cart', ['id' => $request->productID , 'quantity' => $request->toBuy]);
+        }
+        return back()->with('added', 'The product has been added to the cart.');
     }
 
     /**
