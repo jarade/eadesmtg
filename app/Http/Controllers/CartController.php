@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Product;
 class CartController extends Controller
 {
     /**
@@ -33,29 +34,16 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
-        if(session()->has('products.cart')){
-            $collection = collect(session()->get('products.cart'));
+    {   /*
+        session()->flush();*/
+        $name = Product::find($request->productID)->productName;
 
-            if(!($collection->contains('id', $request->productID))){
-                $request->session()->push('products.cart', ['id' => $request->productID , 'quantity' => $request->toBuy]);
-            }else{
-
-                foreach(session()->get('products.cart') as $item){
-                    if($item['id'] == $request->productID){
-                       /* $cart = session()->pull('products.cart');
-                        array_forget($cart, 'id.' . $item['id']);
-
-                        session()->push('products.cart', $cart);*/
-                        return back()->with('added', 'Sccessfully updated quantity of product.');
-                    }
-                }
-
-                /*$request->session()->push('products.cart', ['id' => $request->productID , 'quantity' => $request->toBuy]);
-                return back()->with('added', 'Successfully updated quantity of product.');*/
-            }
+        if(session()->has('cart.'.$request->productID)){
+            session()->pull('cart.'.$request->productID);
+            session()->push('cart.'. $request->productID, ['id' => $request->productID , 'quantity' => $request->toBuy, 'name' => $name]);
+            return back()->with('added', 'Successfully updated quantity of product.');
         }else{
-            $request->session()->push('products.cart', ['id' => $request->productID , 'quantity' => $request->toBuy]);
+            $request->session()->push('cart.'. $request->productID, ['id' => $request->productID , 'quantity' => $request->toBuy, 'name' => $name]);
         }
         return back()->with('added', 'The product has been added to the cart.');
     }
@@ -68,7 +56,7 @@ class CartController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('product/'.$id);
     }
 
     /**
@@ -91,7 +79,23 @@ class CartController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+
+        $productQuantity = (int)$product->productQuantity;
+        $toBuyQuantity = (int)$request->toBuy;
+        $validQuantity = ($productQuantity >= $toBuyQuantity);
+
+        if($validQuantity){
+            if($toBuyQuantity == 0){
+                session()->pull('cart.' . $id);  
+                return back()->with('status', "Removed item from cart");
+            }
+            session()->pull('cart.' . $id);
+            session()->push('cart.'. $id, ['id' => $id , 'quantity' => $request->toBuy, 'name' => $product->productName]);   
+            return back()->with('status', "Updated item");
+        }
+
+        return back()->with('status', 'Failed to update, please check the quantity and try again.');
     }
 
     /**
@@ -102,6 +106,7 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-        //
+        session()->pull('cart.' . $id);
+        return back()->with('status', "removed item");
     }
 }
