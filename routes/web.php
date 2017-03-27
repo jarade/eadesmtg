@@ -29,6 +29,7 @@ Route::get('contact', function () {
 });*/
 
 // Products
+Route::post('product/search', 'ProductController@search')->name('product.search');
 Route::resource('product', 'ProductController');
 // Life Counter
 Route::resource('life', 'LifeCounter');

@@ -43,7 +43,7 @@
 		}else{
 			var cardName = caseCheck($('#input-card').val());
 
-			$.getJSON('{{ asset("AllCards-x.json") }}', function(card){
+			$.getJSON('{{ asset("json/AllCards-x.json") }}', function(card){
 				if(typeof(card[cardName]) === 'undefined'){
 					$('#cardText').html('<p>The card cannot be found. Please check the name and try again.</p>');
 				}else{
@@ -68,7 +68,7 @@
 						allTypes.push(type);
 					}); 
 
-					$.getJSON('{{ asset("AllSets.json") }}', function(set){
+					$.getJSON('{{ asset("json/AllSets.json") }}', function(set){
 						card[cardName].printings.forEach(function(item){
 							var setName = set[item].name;
 							$('#input-edition').append('<option value="' + setName + '">' + setName + '</option');
@@ -145,13 +145,17 @@
 					<div class="col-sm-10">
 						<select required name="type" id="input-type" class="form-control" >
 							<option default value=''>Select Type</option>
-							<option value="Binder">Binder</option>
-							<option value='Card'>Card</option>
-							<option value="Deckbox">Deckbox</option>
-							<option value='Dice'>Dice</option>
-							<option value='LifeCounter'>Life Counter</option>
-							<option value='PlayMats'>Playmat</option>
-							<option value="Sleeves">Sleeves</option>
+							@php
+								use App\ProductType;
+
+								$types = ProductType::all();
+
+								foreach($types as $type){
+									echo '<option value="' . $type->typeID . '">' . $type->type . '</option>';
+								}
+
+							@endphp
+							
 						</select>
 					</div>
 				</div>

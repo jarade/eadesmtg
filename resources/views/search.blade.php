@@ -4,9 +4,11 @@
 
 @section('content')
     <div class='content container'>
+
 	    <h1>Search</h1>
 
-	    <form class='form-horizontal text-center'>
+	    <form class='form-horizontal text-center' method='post' action='{{ url("product/search") }}'>
+	   	{{ csrf_field() }}
 	    	<div class="row col-sm-12">
 		    	<div class="col-sm-6">
 		    		<div class='row col-sm-11'>
@@ -53,26 +55,32 @@
 		    </div>
 	    </form>
 
+
+@php 
+    use App\Product;
+@endphp
+
 	    <div id='results' class='row'>
 	    	<div class='row'>
-		    	@php 
-		            use App\Product;
-		        @endphp
-		       
-		    	@if (session('status'))
-		    		<h2 class='col-sm-12'>Results</h2>
-				@else
-		    		<h2 class='col-sm-12'>All Products</h2>
-	        	@endif
-
-	        	@if (session('added'))
+	    		@if (session('added'))
 					<div class='row alert alert-success col-sm-12'> 
 		        		<p>{{ session('added') }} </p>
 		        	</div>
 	        	@endif
 
-	        	@if (!session('status'))
-		            @each('includes.product', Product::all(), 'product')
+	    		@if(isset($type))
+	    			<h2 class='col-sm-12'>All {{ $type }}</h2>
+	    			@each('includes.product', Product::where('typeID' , $type)->get(), 'product')
+	    		@else
+	    			@if(isset($search))
+	    				<h2 class='col-sm-12'>Search Results - {{ $term }}</h2>
+	    				@each('includes.product', $search, 'product')
+	    			@else
+			        	@if (!session('status'))
+			        		<h2 class='col-sm-12'>All Products</h2>
+				            @each('includes.product', Product::all(), 'product')
+				        @endif
+				    @endif
 		        @endif
 	        </div>
 	            

@@ -9,6 +9,7 @@ use App\CardEdition;
 use App\CardType;
 use App\Product;
 use App\ProductImage;
+use App\ProductType;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use File;
@@ -87,8 +88,6 @@ class ProductController extends Controller
             //var_dump($request->file('images')[0]->getRealPath());
             
         }
-        var_dump($request->all());
-        exit();
 
         $product = new Product;
         $product->productName = $request->productName;
@@ -99,7 +98,7 @@ class ProductController extends Controller
 
         $product->save();
 
-        if($request->type == 'Card'){
+        if($request->type == 1){ // Card product type
             $editions = new CardEdition;
             $editions->cardEdition = $request->edition;
             $editions->productID = $product->productID;
@@ -125,6 +124,16 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        if($id == 'search'){
+            return view('search', ['search' => "search"]);
+        }
+        // If $id is a type then show relevant products.
+        foreach(ProductType::all() as $type){
+            if($type->type == $id){
+                return view('search', ['type' => $type->typeID]);
+            }
+        }
+
         return view('viewProduct', Product::find($id));
     }
 
@@ -160,5 +169,18 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Show the results of a search.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $results = Product::where('productName', 'LIKE', '%' . $request->search . '%')->get();
+
+        return view('search', ['search' => $results, 'term' => $request->search]);
     }
 }
