@@ -179,8 +179,57 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
-        $results = Product::where('productName', 'LIKE', '%' . $request->search . '%')->get();
+        $searchTerm = $request->search;
 
-        return view('search', ['search' => $results, 'term' => $request->search]);
+        // Get all the results determined by terms
+        if(isset($request->searchIn)){
+           $results = Product::where('productName', 'LIKE', '%' . $request->search . '%')
+                                ->orwhere('productDescription', 'LIKE', '%' . $request->search . '%');
+
+            $searchTerm = $this->addStringDivider($searchTerm) . 'Product Description Inclusive';
+        }else{
+            $results = Product::where('productName', 'LIKE', '%' . $request->search . '%');
+        }
+
+        // Filter the results by the type
+        if(isset($request->type)){
+            switch($request->type){
+                case 0: break; // Ignore types
+                case 1: // Get all non-cards
+                    $results = $results->where('typeID', '!=', 2); // 2 : card->typeID
+                    $searchTerm = $this->addStringDivider($searchTerm) . 'Accessories Only';
+
+                    if($request->accessoryTypes != 0){
+                        $results = $results->where('typeID', '=', $request->accessoryTypes);
+                        $searchTerm = $this->addStringDivider($searchTerm);
+                        $searchTerm .= ProductType::where('typeID', '=', $request->accessoryTypes)->first()->type;
+                    }
+                    break;
+                case 2: // Cards only
+                    $results = $results->where('typeID', '=', $request->type);
+                    $searchTerm = $this->addStringDivider($searchTerm) . 'Cards Only';
+
+                    if($request->cardType != 'all'){
+                        $searchTerm = $this->addStringDivider($searchTerm) . $request->cardType;
+                    }
+
+                    if($request->edition != 'all'){
+                        $searchTerm = $this->addStringDivider($searchTerm) . $request->edition;
+                    }
+                    break;
+            }
+        }
+
+        if($searchTerm == ''){
+            $searchTerm = 'No search Criteria Selected. Showing all Results.';
+        }
+        return view('search', ['search' => $results->get(), 'term' => $searchTerm]);
+    }
+
+    private function addStringDivider($s){
+        if($s != ''){
+                $s .= ' | '; 
+        }
+        return $s;   
     }
 }

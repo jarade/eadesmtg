@@ -112,6 +112,9 @@
 	footer a:hover{
 		color: #800000;
 	}
+	h3{
+		margin-top: 0;
+	}
 	h5{
 		color: white;
 		font-size: 20px;

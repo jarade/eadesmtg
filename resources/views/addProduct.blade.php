@@ -51,7 +51,7 @@
 					$('#input-description').val(card[cardName].text);
 					$('#input-edition').attr('disabled', false);
 					$('#types').attr('disabled', false);
-					$('#input-type').val('Card').change();
+					$('#input-type').val('2').change();
 					var allTypes = [];
 
 					if(card[cardName].supertypes){
