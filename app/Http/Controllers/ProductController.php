@@ -46,6 +46,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // Check if each image is valid.
         $message = array();
 
         if(count($request->images) > 0){
@@ -63,30 +64,6 @@ class ProductController extends Controller
                     array_push($images, $uploadedImage);
                 }
             }
-
-            if($issue){
-                return redirect('product/create')
-                    ->with('status', $message);  
-            }else{
-                foreach($images as $img){
-                    $fileName = $img->getClientOriginalName();
-                    $img->move($imagePath, $fileName);
-                }
-            }
-            array_push($message, 'Images have successfully been uploaded.');
-            return redirect('product')
-                ->with('status', $message);
-            /*
-            
-            if (File::exists($imagePath . $fileName)){   
-                return redirect('product/create')
-                    ->with('status', 'duplicate');  
-            }
-
-            $request->file('images')[0]->move($imagePath, $fileName);
-*/
-            //var_dump($request->file('images')[0]->getRealPath());
-            
         }
 
         $product = new Product;
@@ -94,26 +71,56 @@ class ProductController extends Controller
         $product->productDescription = $request->description;
         $product->productPrice = $request->price;
         $product->productQuantity = $request->quantity; 
-        $product->productType = $request->type;
+        $product->typeID = $request->type;
 
-        $product->save();
 
-        if($request->type == 1){ // Card product type
+        if($request->type == 2){ // Card product type
             $editions = new CardEdition;
-            $editions->cardEdition = $request->edition;
-            $editions->productID = $product->productID;
-            $editions->save();
-
+            $editions->cardEdition = $request->edition;    
+            
+            $cardTypes = array();
             foreach(json_decode($request->types) as $type){
                 $cardType = new CardType;
-                $cardType->productID = $product->productID;
-                $cardType->Type = $type;
-                $cardType->save();
+                $cardType->cardType = $type;
+                array_push($cardTypes, $cardType);
             }
         }
-        //redirect('product/create')
-          // /          ->with('status', 'Inserted');
 
+        if(!$issue){
+            $product->save();
+
+            if($request->type == 2){
+                $editions->productID = $product->productID;
+                $editions->save();
+
+                foreach($cardTypes as $cardType){
+                    $cardType->productID = $product->productID;
+                    $cardType->save();
+                }
+            }
+
+            array_push($message, 'The Product is added successfully.');
+
+
+            // Insert Images
+            foreach($images as $img){
+                $productImage = new ProductImage;
+
+                $fileName = $img->getClientOriginalName();
+                $img->move($imagePath, $fileName);
+
+                $productImage->productID = $product->productID;
+                $productImage->productImage = $fileName;
+
+                $productImage->save();
+            }
+            
+            array_push($message, 'Images have successfully been uploaded.');
+        }
+
+        return redirect('product/create')
+                ->with('status', $message)
+                ->withInput();
     }
 
     /**

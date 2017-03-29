@@ -15,12 +15,19 @@
         }
 
     </script>
+
+@php
+    use App\ProductImage;
+
+    $image = ProductImage::where('productID', '=', $productID)->first()['productImage'];
+@endphp
+
     <div class='content container'>
         <form class='form-horizontal text-center'>
             <div class='row'>
                 <div class='col-sm-8'>
                     <div class='row text-center'>
-                         <img class='productBig' src="{{ asset('img/products/alwaysWatching.jpg') }} " />
+                         <img class='productBig' src="{{ asset('img/products/' . $image) }} " />
                     </div>
                     <div class='row'>
                         <img class='productSmall' src="{{ asset('img/products/alwaysWatching.jpg') }} " onmouseenter="bigImg(this)" onmouseleave='smallImg(this)' />

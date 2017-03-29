@@ -1,3 +1,9 @@
+@php
+	use App\ProductImage;
+
+	$image = ProductImage::where('productID', '=', $product->productID)->first()['productImage'];
+@endphp
+
 <form action="{{ url('cart') }}" method='post' class='product col-sm-4 text-center'>
 	{{ csrf_field() }}
 	<a href='{{url("product/$product->productID")}}'>
@@ -7,7 +13,7 @@
 			</legend>
 		</div>
 		<div class='row'>
-			<img class='productImage' src="{{ asset('img/products/alwaysWatching.jpg') }} "/>
+			<img class='productImage' src="{{ asset('img/products/' . $image) }}"/>
 		</div>
 	</a>
 	<br>

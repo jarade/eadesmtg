@@ -128,14 +128,14 @@
 				<div class="form-group required">
 					<label class="col-sm-2 control-label" for="input-name">Product Name: </label>
 					<div class="col-sm-10">
-						<input required type="text" name="productName" id="input-name" class="form-control" placeholder="Product Name" />
+						<input required type="text" name="productName" id="input-name" class="form-control" placeholder="Product Name" value="{{ old('productName') }}"/>
 					</div>
 				</div>
 
 				<div class="form-group required">
 					<label class="col-sm-2 control-label" for="input-description">Product Description: </label>
 					<div class="col-sm-10">
-						<textarea required name="description" rows="10" id="input-description" class="form-control" placeholder="Product Description"></textarea>
+						<textarea required name="description" rows="10" id="input-description" class="form-control" placeholder="Product Description">{{ old('description') }}</textarea>
 						<div class="text-danger"></div>
 					</div>
 				</div>
@@ -151,7 +151,11 @@
 								$types = ProductType::all();
 
 								foreach($types as $type){
-									echo '<option value="' . $type->typeID . '">' . $type->type . '</option>';
+									echo '<option value="' . $type->typeID . '"';
+									if(old('type') == $type->typeID){
+										echo 'selected';
+									}
+									echo '>' . $type->type . '</option>';
 								}
 
 							@endphp
