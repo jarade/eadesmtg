@@ -218,10 +218,29 @@ class ProductController extends Controller
 
                     if($request->cardType != 'all'){
                         $searchTerm = $this->addStringDivider($searchTerm) . $request->cardType;
+
+                        $cardTypes = CardType::where('cardType', '=', $request->cardType);
+                        
+                        $list = array();
+
+                        foreach($cardTypes->get() as $ct){
+                            array_push($list, $ct->productID);
+                        }
+                        $results = $results->whereIn('productID', $list);
+                        
                     }
 
                     if($request->edition != 'all'){
                         $searchTerm = $this->addStringDivider($searchTerm) . $request->edition;
+
+                        $cardEds = CardEdition::where('cardEdition', '=', $request->edition);
+                        
+                        $edList = array();
+
+                        foreach($cardEds->get() as $ce){
+                            array_push($edList, $ce->productID);
+                        }
+                        $results = $results->whereIn('productID', $edList);
                     }
                     break;
             }

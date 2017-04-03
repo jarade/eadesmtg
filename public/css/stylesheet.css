@@ -225,17 +225,38 @@
 		margin: 10px 5px 0 0;
 	}
 	.product{
-		padding: 15px;
+		padding-left: 15px;
+		padding-right: 15px;
 		max-width: 400px;
+		height: 400px;
+	}
+	.productLegend{
+		height: 100px;
+		line-height: 30px;
+
+	}
+	.productLegend legend {
+		height: 100%;
+		position: relative;
+	}
+	.productLegend legend div{
+		position: absolute;
+		width: 75%;
+		text-align: center;
+		bottom: 10px;
 	}
 	.productSubmit{
 		margin: 0 auto;
 		min-width: 70%;
 	}
+	.productImageDiv{
+		height: 150px;
+	}
 	.productImage{
 		margin: 0 auto;
 		padding: 5px;
 		width: 30%;
+		max-height: 130px;
 	}
 	.productBig{
 		margin: 0 auto;

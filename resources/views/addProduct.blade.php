@@ -29,9 +29,24 @@
 	}
 
 	function caseCheck(toEdit){
+		var exceptions = ['the', 'of', 'to'];
+
 		var splitStr = toEdit.toLowerCase().split(' ');
 		for(var i = 0; i < splitStr.length; i++){
-			splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1); 
+			if(i != 0){
+				var disallow = false;;
+				for(var e = 0; e < exceptions.length; e++){
+					if(splitStr[i] == exceptions[e]){
+						 disallow = true;
+					}
+				}
+
+				if(!disallow){
+					splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+				}
+			}else{
+				splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1); 
+			}
 		}
 		return splitStr.join(' ');;
 	}
@@ -220,35 +235,37 @@
     </div>
 
     <script>
-    	 function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
+   	function handleFileSelect(evt) {
+	    var files = evt.target.files; // FileList object
+		if(files.length > 0){
+			$('#imageList').html('');
+		}
+	    // Loop through the FileList and render image files as thumbnails.
+	    for (var i = 0, f; f = files[i]; i++) {
 
-    // Loop through the FileList and render image files as thumbnails.
-    for (var i = 0, f; f = files[i]; i++) {
+	      // Only process image files.
+	      if (!f.type.match('image.*')) {
+	        continue;
+	      }
+	      var allImages = [];
+	      var reader = new FileReader();
 
-      // Only process image files.
-      if (!f.type.match('image.*')) {
-        continue;
-      }
-      var allImages = [];
-      var reader = new FileReader();
+	      // Closure to capture the file information.
+	      reader.onload = (function(theFile) {
+	        return function(e) {
+	          // Render thumbnail.
+	          allImages.push(e.target.result);
+	          $('#imageList').append('<img class="thumb" src="' + e.target.result +
+	                            '" title="' + escape(theFile.name) + '"/>');
+	        };
+	      })(f);
 
-      // Closure to capture the file information.
-      reader.onload = (function(theFile) {
-        return function(e) {
-          // Render thumbnail.
-          allImages.push(e.target.result);
-          $('#imageList').append('<img class="thumb" src="' + e.target.result +
-                            '" title="' + escape(theFile.name) + '"/>');
-        };
-      })(f);
+	      // Read in the image file as a data URL.
+	      reader.readAsDataURL(f);
+	    }
 
-      // Read in the image file as a data URL.
-      reader.readAsDataURL(f);
-    }
-
-    $('#imageSources').val( $('#imageSources').val() + JSON.stringify(allImages));
-  }
+	    $('#imageSources').val( $('#imageSources').val() + JSON.stringify(allImages));
+	}
 
   document.getElementById('input-image').addEventListener('change', handleFileSelect, false);
 </script>

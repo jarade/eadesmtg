@@ -7,12 +7,10 @@
 <form action="{{ url('cart') }}" method='post' class='product col-sm-4 text-center'>
 	{{ csrf_field() }}
 	<a href='{{url("product/$product->productID")}}'>
-		<div class='row'>
-			<legend class='col-sm-12'>
-				{{ $product->productName }}
-			</legend>
+		<div class='row productLegend'>
+			<legend class='col-sm-12'><div>{{ $product->productName }}</div></legend>
 		</div>
-		<div class='row'>
+		<div class='row productImageDiv'>
 			<img class='productImage' src="{{ asset('img/products/' . $image) }}"/>
 		</div>
 	</a>
