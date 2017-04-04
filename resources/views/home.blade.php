@@ -4,6 +4,7 @@
 
 @section('content')
 	<div class="homeWrap">
+		@include('includes.sidebar')
 
 		<div class="mainContent">
 			<h1>Welcome to EadesMTG!</h1>
