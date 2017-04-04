@@ -15,8 +15,12 @@
 			@each('includes.product', Product::where('typeID' , $type)->get(), 'product')
 		@else
 			@if(isset($search))
-				<h2 class='col-sm-12'>Search Results - {{ $term }}</h2>
-				@each('includes.product', $search, 'product')
+				{{$search}}
+				@if(isset($term))
+					<h2 class='col-sm-12'>Search Results - {{ $term }}</h2>
+				
+					@each('includes.product', $search, 'product')
+				@endif
 			@else
 	        	@if (!session('status'))
 	        		<h2 class='col-sm-12'>All Products</h2>

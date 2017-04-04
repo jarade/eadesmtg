@@ -249,7 +249,18 @@ class ProductController extends Controller
         if($searchTerm == ''){
             $searchTerm = 'No search Criteria Selected. Showing all Results.';
         }
-        return view('search', ['search' => $results->get(), 'term' => $searchTerm]);
+
+        if($request->path() == 'product/search'){
+            return back()
+                ->with('search', $results->get())
+                ->with('term', 'NOT')
+                ->withInput();
+        
+        }else{
+            return view('search', ['search' => $results->get(), 'term' => $searchTerm]);
+        }
+
+        //return view('search', ['search' => $results->get(), 'term' => $searchTerm]);
     }
 
     private function addStringDivider($s){

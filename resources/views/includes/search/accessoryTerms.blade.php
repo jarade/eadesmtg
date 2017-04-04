@@ -1,4 +1,4 @@
-<div class='row col-sm-11'>
+<div id="searchAcc" class='row col-sm-11'>
     <h3>Accessory Search</h3>
     <div>
     <select class='form-control' name='accessoryTypes'>

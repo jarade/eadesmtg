@@ -1,5 +1,4 @@
-
-<div class='row col-sm-11'>
+<div id="searchCard" class='row col-sm-11'>
     <h3>Card Search</h3>
     <div>
     	Note: Only shows types and editions of cards in stock.
