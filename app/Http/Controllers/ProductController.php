@@ -186,83 +186,140 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
-        $searchTerm = $request->search;
-
-        // Get all the results determined by terms
-        if(isset($request->searchIn)){
-           $results = Product::where('productName', 'LIKE', '%' . $request->search . '%')
-                                ->orwhere('productDescription', 'LIKE', '%' . $request->search . '%');
-
-            $searchTerm = $this->addStringDivider($searchTerm) . 'Product Description Inclusive';
-        }else{
-            $results = Product::where('productName', 'LIKE', '%' . $request->search . '%');
-        }
+        // Filter by search criteria (in description if necessary)
+        $something = $this->checkName($request->search, $request->searchIn);
 
         // Filter the results by the type
-        if(isset($request->type)){
-            switch($request->type){
-                case 0: break; // Ignore types
-                case 1: // Get all non-cards
-                    $results = $results->where('typeID', '!=', 2); // 2 : card->typeID
-                    $searchTerm = $this->addStringDivider($searchTerm) . 'Accessories Only';
+        $something = $this->checkType($something['searchTerm'], $something['results'], $request->type, $request->accessoryTypes, $request->cardType, $request->edition);
 
-                    if($request->accessoryTypes != 0){
-                        $results = $results->where('typeID', '=', $request->accessoryTypes);
-                        $searchTerm = $this->addStringDivider($searchTerm);
-                        $searchTerm .= ProductType::where('typeID', '=', $request->accessoryTypes)->first()->type;
-                    }
-                    break;
-                case 2: // Cards only
-                    $results = $results->where('typeID', '=', $request->type);
-                    $searchTerm = $this->addStringDivider($searchTerm) . 'Cards Only';
-
-                    if($request->cardType != 'all'){
-                        $searchTerm = $this->addStringDivider($searchTerm) . $request->cardType;
-
-                        $cardTypes = CardType::where('cardType', '=', $request->cardType);
-                        
-                        $list = array();
-
-                        foreach($cardTypes->get() as $ct){
-                            array_push($list, $ct->productID);
-                        }
-                        $results = $results->whereIn('productID', $list);
-                        
-                    }
-
-                    if($request->edition != 'all'){
-                        $searchTerm = $this->addStringDivider($searchTerm) . $request->edition;
-
-                        $cardEds = CardEdition::where('cardEdition', '=', $request->edition);
-                        
-                        $edList = array();
-
-                        foreach($cardEds->get() as $ce){
-                            array_push($edList, $ce->productID);
-                        }
-                        $results = $results->whereIn('productID', $edList);
-                    }
-                    break;
-            }
-        }
+        $searchTerm = $something['searchTerm'];
+        $results = $something['results'];
 
         if($searchTerm == ''){
             $searchTerm = 'No search Criteria Selected. Showing all Results.';
         }
 
-        if($request->path() == 'product/search'){
-            return back()
-                ->with('search', $results->get())
-                ->with('term', 'NOT')
-                ->withInput();
-        
-        }else{
-            return view('search', ['search' => $results->get(), 'term' => $searchTerm]);
-        }
+        return redirect('product')
+            ->with('search', $results->get())
+            ->with('term', $searchTerm)
+            ->withInput();
 
         //return view('search', ['search' => $results->get(), 'term' => $searchTerm]);
     }
 
+    /***
+    **  checkname(string, string) - Get the results and searchTerm of the search criteria provided.
+    **  Pre: $search - the search criteria | $searchIn - if the product description needs to be checked
+    **  Post: array; searchTerm - the terms applied to the filter | results - the results provided by the filter
+    ***/
+    private function checkName($search, $searchIn){
+        $searchTerm = $search;
+
+        // Get all the results determined by terms
+        if(isset($searchIn)){
+            // sql: WHERE (productName LIKE %search% OR productDescription LIKE %search%)
+            $results = Product::where(function($query) use($search){
+                $query->where('productName', 'LIKE', '%' . $search . '%');
+                $query->orwhere('productDescription', 'LIKE', '%' . $search . '%');
+            });
+
+            $searchTerm = $this->addStringDivider($searchTerm) . 'Product Description Inclusive';
+        }else{
+            $results = Product::where('productName', 'LIKE', '%' . $search . '%');
+        }
+
+        return array('searchTerm' => $searchTerm, 'results' => $results);
+    }
+
+    /***
+    **  checkType(string, eloquent, int, int, int, string) - Get the results and searchTerm of the filters.
+    **  Pre:    $searchTerm - the terms applied to the filter | $results - the results provided by the filter
+    **          | $type - the typeID of the product | $accType - the typeID of the accessory | $cardType - the cardTypeID of the product | $cardEd - the card edition 
+    **  Post: array; searchTerm - the terms applied to the filter | results - the results provided by the filter
+    ***/
+    private function checkType($searchTerm, $results, $type, $accType, $cardType, $cardEd){
+        $something = array('searchTerm' => $searchTerm, 'results' => $results);
+
+        // Check what types need to be filtered.
+        if(isset($type)){
+            switch($type){
+                case 0: break; // Ignore types
+                case 1: // Get all non-cards
+                    $something = $this->checkAccType($searchTerm, $results, $accType);
+                    break;
+                case 2: // Cards only
+                    $something = $this->checkCardType($searchTerm, $results, $type, $cardType, $cardEd);
+                    break;
+            }
+        }
+
+        return array('searchTerm' => $something['searchTerm'], 'results' => $something['results']);
+    }
+
+    /***
+    **  checkAccType(string, eloquent, id) - Get the results and searchTerm of the filters.
+    **  Pre:    $searchTerm - the terms applied to the filter | $results - the results provided by the filter
+    **          $accType - the typeID of the accessory 
+    **  Post: array; searchTerm - the terms applied to the filter | results - the results provided by the filter
+    ***/
+    private function checkAccType($searchTerm, $results, $accType){
+        $results = $results->where('typeID', '!=', 2); // 2 : card->typeID
+        $searchTerm = $this->addStringDivider($searchTerm) . 'Accessories Only';
+
+        if($accType != 0){
+            $results = $results->where('typeID', '=', $accType);
+            $searchTerm = $this->addStringDivider($searchTerm);
+            $searchTerm .= ProductType::where('typeID', '=', $accType)->first()->type;
+        }
+
+        return array('searchTerm' => $searchTerm, 'results' => $results);
+    }
+
+    /***
+    **  checkType(string, eloquent, int, int, string) - Get the results and searchTerm of the filters.
+    **  Pre:    $searchTerm - the terms applied to the filter | $results - the results provided by the filter
+    **          | $type - the typeID of the product | $cardType - the cardTypeID of the product | 
+    **          $cardEd - the card edition 
+    **  Post: array; searchTerm - the terms applied to the filter | results - the results provided by the filter
+    ***/
+    private function checkCardType($searchTerm, $results, $type, $cardType, $cardEd){
+        $results = $results->where('typeID', '=', $type);
+        $searchTerm = $this->addStringDivider($searchTerm) . 'Cards Only';
+
+        if($cardType != 'all'){
+            $searchTerm = $this->addStringDivider($searchTerm) . $cardType;
+
+            $cardTypes = CardType::where('cardType', '=', $cardType);
+            
+            $list = array();
+
+            foreach($cardTypes->get() as $ct){
+                array_push($list, $ct->productID);
+            }
+            $results = $results->whereIn('productID', $list);
+            
+        }
+
+        if($cardEd != 'all'){
+            $searchTerm = $this->addStringDivider($searchTerm) . $cardEd;
+
+            $cardEds = CardEdition::where('cardEdition', '=', $cardEd);
+            
+            $edList = array();
+
+            foreach($cardEds->get() as $ce){
+                array_push($edList, $ce->productID);
+            }
+            $results = $results->whereIn('productID', $edList);
+        }
+
+        return array('searchTerm' => $searchTerm, 'results' => $results);
+    }
+    /***
+    **  addStringDivider(string) - Add a divider to a string.
+    **  Pre: $s - string to be altered
+    **  Post: $s - string after adding ' | ' 
+    ***/
     private function addStringDivider($s){
         if($s != ''){
                 $s .= ' | '; 

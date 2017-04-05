@@ -14,7 +14,7 @@
 	    	<label class='control-label' for="searchIn">Search in product description: </label>
 	    </div>
 	    <div class='col-sm-2 pull-right'>
-	   		<input class='form-control' type="checkbox" id='searchIn' name="searchIn" value="{{ old('searchIn') }}"/>
+	   		<input class='form-control' type="checkbox" id='searchIn' name="searchIn" value="checked" {{ old('searchIn') }}/>
 	    </div>
     </div>
 </div>
@@ -24,9 +24,9 @@
 	<div class='col-sm-2'></div>
 	<div class='col-sm-9'> 
 	    <select class='form-control' name="type" onchange="showSearchCriteria(this)">
-	    	<option value="0" @if(old('type') == 0) selected @endif >All Product Types</option>
-	    	<option value="1" @if(old('type') == 1) selected @endif >Accessories Only</option>
-	    	<option value="2" @if(old('type') == 2) selected @endif >Cards Only</option>
+	    	<option value="0" {{ old('type') == 0 ? 'selected' : "" }}>All Product Types</option>
+	    	<option value="1" {{ old('type') == 1 ? 'selected' : "" }}>Accessories Only</option>
+	    	<option value="2" {{ old('type') == 2 ? 'selected' : "" }}>Cards Only</option>
 	    </select>
     </div>
 </div>
@@ -34,19 +34,19 @@
 <script>
 	function showSearchCriteria(option){
 		// hide all criterias.
-		$('#searchAcc').hide();
-		$('#searchCard').hide();
+		$('#searchAcc').addClass('hidden');
+		$('#searchCard').addClass('hidden');
 		console.log(parseInt(option.value));
 
 		// Show the relevant Criteria
 		switch(parseInt(option.value)){
-			default: 	break;
-			case 0: 	break;
+			default: 	
+				break;
 			case 1: 
-				$('#searchAcc').show();
+				$('#searchAcc').removeClass('hidden');
 				break;
 			case 2: 
-				$('#searchCard').show();
+				$('#searchCard').removeClass('hidden');
 				break;
 		}
 	}

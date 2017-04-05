@@ -1,5 +1,6 @@
 @php 
     use App\Product;
+    use App\ProductType;
 @endphp
 
 <div id='results' class='row'>
@@ -11,15 +12,14 @@
     	@endif
 
 		@if(isset($type))
-			<h2 class='col-sm-12'>All {{ $type }}</h2>
+			<h2 class='col-sm-12'>Product: {{ ProductType::where('typeID', '=', $type)->first()->type }}</h2>
 			@each('includes.product', Product::where('typeID' , $type)->get(), 'product')
 		@else
-			@if(isset($search))
-				{{$search}}
-				@if(isset($term))
-					<h2 class='col-sm-12'>Search Results - {{ $term }}</h2>
+			@if(session('search'))
+				@if(session('term'))
+					<h2 class='col-sm-12'>Search Results - {{ session('term') }}</h2>
 				
-					@each('includes.product', $search, 'product')
+					@each('includes.product', session('search'), 'product')
 				@endif
 			@else
 	        	@if (!session('status'))

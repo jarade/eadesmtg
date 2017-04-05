@@ -7,7 +7,7 @@
 <form action="{{ url('cart') }}" method='post' class='product col-sm-4 text-center'>
 	{{ csrf_field() }}
 	<a href='{{url("product/$product->productID")}}'>
-		<div class='row productLegend'>
+		<div class='row resultLegend'>
 			<legend class='col-sm-12'><div>{{ $product->productName }}</div></legend>
 		</div>
 		<div class='row productImageDiv'>

@@ -23,9 +23,9 @@ Route::get('contact', function () {
 });
 
 
-Route::get('/db', function(){
+/*Route::get('/db', function(){
 	return DB::select('show tables;');
-});
+});*/
 
 // Products
 Route::post('product/search', 'ProductController@search')->name('product.search');

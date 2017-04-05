@@ -1,4 +1,4 @@
-<div id="searchCard" class='row col-sm-11'>
+<div id="searchCard" class='row col-sm-11 {{ old("type") != 2 ? "hidden" : "" }}'>
     <h3>Card Search</h3>
     <div>
     	Note: Only shows types and editions of cards in stock.
@@ -10,7 +10,13 @@
 	    		$cardTypes = CardType::groupBy('cardType')->get(['cardType']);
 
 	    		foreach($cardTypes as $cTypes){
-	    			echo '<option value="'. $cTypes->cardType .'">'. $cTypes->cardType .'</option>';
+	    			echo '<option value="'. $cTypes->cardType . '"';
+
+	    			if(old('cardType') == $cTypes->cardType){
+	    				echo ' selected ';
+	    			}
+
+	    			echo '>' . $cTypes->cardType .'</option>';
 	    		}
 	    	@endphp
 	    </select>
@@ -22,7 +28,12 @@
 	    		$cardTypes = CardEdition::groupBy('cardEdition')->get(['cardEdition']);
 
 	    		foreach($cardTypes as $cTypes){
-	    			echo '<option value="'. $cTypes->cardEdition .'">'. $cTypes->cardEdition .'</option>';
+	    			echo '<option value="' . $cTypes->cardEdition . '"';
+	    			if(old('edition') == $cTypes->cardEdition){
+	    				echo ' selected ';
+	    			}
+	    			echo '>';
+	    			echo $cTypes->cardEdition .'</option>';
 	    		}
 	    	@endphp
 	    </select>

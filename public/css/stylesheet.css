@@ -230,16 +230,16 @@
 		max-width: 400px;
 		height: 400px;
 	}
-	.productLegend{
+	.resultLegend{
 		height: 100px;
 		line-height: 30px;
 
 	}
-	.productLegend legend {
+	.resultLegend legend{
 		height: 100%;
 		position: relative;
 	}
-	.productLegend legend div{
+	.resultLegend legend div{
 		position: absolute;
 		width: 75%;
 		text-align: center;
@@ -255,7 +255,7 @@
 	.productImage{
 		margin: 0 auto;
 		padding: 5px;
-		width: 30%;
+		max-width: 200px;
 		max-height: 130px;
 	}
 	.productBig{
@@ -280,9 +280,6 @@
 
 	.cartItem{
 		padding: 5px;
-	}
-	#searchCard, #searchAcc{
-		display: none;
 	}
 	@media screen and (min-width: 768px){
 		#titlediv{
