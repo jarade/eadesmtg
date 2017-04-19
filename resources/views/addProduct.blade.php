@@ -57,7 +57,6 @@
 			$('#cardText').append('<p>Please do not leave this blank</p>');
 		}else{
 			var cardName = caseCheck($('#input-card').val());
-
 			$.getJSON('{{ asset("json/AllCards-x.json") }}', function(card){
 				if(typeof(card[cardName]) === 'undefined'){
 					$('#cardText').html('<p>The card cannot be found. Please check the name and try again.</p>');
@@ -91,6 +90,8 @@
 					});
 
 					$('#cardtypes').val(JSON.stringify(allTypes));
+
+					CKEDITOR.instances['input-description'].setData(card[cardName].text);
 				}
 			});
 		}
@@ -122,6 +123,22 @@
 					<label class="col-sm-2 control-label" for="input-card">Card Name: </label>
 					<div class="col-sm-10">
 						<input required type="text" name="cardName" id="input-card" class="form-control" placeholder="Place card name here..." /><br>
+						<script>
+							$(function() {
+							    $.getJSON('{{ asset("json/AllCards-x.json") }}', function(cardList){ 
+							      var cardListA = [];
+
+							      for(var card in cardList){ 
+							        cardListA.push(card);
+							      }
+
+							      $( "#input-card" ).autocomplete({
+							        source: cardListA.sort(),
+							        minLength: 3
+							      });
+							    })
+							 });
+						 </script>
 						<div id='cardText' class="text-danger"></div>
 					</div>
 				</div>
@@ -151,6 +168,11 @@
 					<label class="col-sm-2 control-label" for="input-description">Product Description: </label>
 					<div class="col-sm-10">
 						<textarea required name="description" rows="10" id="input-description" class="form-control" placeholder="Product Description">{{ old('description') }}</textarea>
+
+						<script>
+							CKEDITOR.replace('input-description');
+						</script>
+
 						<div class="text-danger"></div>
 					</div>
 				</div>

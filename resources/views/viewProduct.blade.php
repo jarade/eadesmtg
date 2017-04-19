@@ -4,49 +4,46 @@
 
 @section('content')
 
-    <script>
 
-        function bigImg(img){
-            console.log(img.className);
-        }
 
-        function smallImg(img){
-            console.log(img.className);
-        }
-
-    </script>
-
-@php
-    use App\ProductImage;
-
-    $image = ProductImage::where('productID', '=', $productID)->first()['productImage'];
-@endphp
 
     <div class='content container'>
         <form class='form-horizontal text-center'>
-            <div class='row'>
+            <div class='row viewProduct'>
                 <div class='col-sm-8'>
-                    <div class='row text-center'>
-                         <img class='productBig' src="{{ asset('img/products/' . $image) }} " />
-                    </div>
+                    @php
+                        use App\ProductImage;
+
+                        $images = ProductImage::where('productID', '=', $productID)->get();
+                        $image = ProductImage::where('productID', '=', $productID)->first()['productImage'];
+                    @endphp
                     <div class='row'>
-                        <img class='productSmall' src="{{ asset('img/products/alwaysWatching.jpg') }} " onmouseenter="bigImg(this)" onmouseleave='smallImg(this)' />
-                        <img class='productSmall' src="{{ asset('img/products/alwaysWatching.jpg') }} " onmouseenter="bigImg(this)" onmouseleave='smallImg(this)' />
+                        <img id='displayImage' class='productBig' src="{{ asset('img/products/' . $image) }}"/>
+                    </div>
+
+                    <div class='row'>
+                        @each('includes.viewProductImage', $images, 'image')
                     </div>
                 </div>
                 <div class='col-sm-4'>
                     <div class='row'>
-                        <legend class='col-sm-12 '>{{ $productName }}</legend>
+                        <div class='row addC'>
+                            <label for='toBuy' class='control-label col-sm-6'>Quantity:</label>
+                            <input class='form-control quantityInput col-sm-6' type='number' id='toBuy' name='toBuy' value='1' max='{{ $productQuantity }}' step='1' min='1'>
+                        </div>
+                        <div class='row addC'>
+                            <input class='btn btn-color productSubmit' type='submit' name='add' value='Add to Cart' />
+                        </div>
                     </div>
                     <div class='row'>
-                        <p class='col-sm-6'>Available: {{ $productQuantity }}</p>
-                        <p class='col-sm-6'>$ {{ $productPrice }}</p>
+                        <legend class='col-sm-12 '><h2>{{ $productName }}</h2></legend>
                     </div>
                     <div class='row'>
-                        <p class='col-sm-12 text-center'>{{ $productDescription }}</p>
-                    </div>
+                        <h4 class='col-sm-6'>Available: {{ $productQuantity }}</h4>
+                        <h4 class='col-sm-6'><b>$ {{ $productPrice }}</b></h4>
+                    </div><hr>
                     <div class='row'>
-                        <input class='btn btn-color productSubmit' type='submit' name='add' value='Add to Cart' />
+                        <p class='col-sm-12 text-center'>{!! $productDescription !!}</p>
                     </div>
                 </div>
             </div>

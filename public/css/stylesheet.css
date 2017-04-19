@@ -245,6 +245,9 @@
 		text-align: center;
 		bottom: 10px;
 	}
+	.viewProduct{
+		margin-top: 15px;
+	}
 	.productSubmit{
 		margin: 0 auto;
 		min-width: 70%;
@@ -266,7 +269,15 @@
 	.productSmall{
 		margin: 0 auto;
 		padding: 5px;
-		height: 200px;
+		max-height: 200px;
+		max-width: 200px;
+		overflow: hidden;
+	}
+	.unselected{
+		opacity: 0.5;
+	}
+	.addC{
+		margin: 5px;
 	}
 	#searchButton{
 		min-height: 50px;
