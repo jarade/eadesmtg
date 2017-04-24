@@ -32,12 +32,12 @@ Route::post('product/search', 'ProductController@search')->name('product.search'
 Route::resource('product', 'ProductController');
 // Life Counter
 Route::resource('life', 'LifeCounter');
+
+// Checkout
+Route::get('cart/checkout', 'CartController@checkout')->name('cart.checkout');
 //Shopping Cart
 Route::resource('cart', 'CartController');
 
-//Route::get('life', 'LifeCounter@index');
-
-//Route::post('/createSession', 'LifeCounter@create');
 
 Route::post('/checkSession', function(){
 	session_start();

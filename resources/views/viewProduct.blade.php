@@ -4,11 +4,9 @@
 
 @section('content')
 
-
-
-
-    <div class='content container'>
-        <form class='form-horizontal text-center'>
+    <div class='content container'>  
+        <form action="{{ url('cart') }}" method='post'  class='form-horizontal text-center'>
+        {{ csrf_field() }}
             <div class='row viewProduct'>
                 <div class='col-sm-8'>
                     @php
@@ -28,10 +26,16 @@
                 <div class='col-sm-4'>
                     <div class='row'>
                         <div class='row addC'>
+                        @if (session('added'))
+                            <div class='row alert alert-success col-sm-12'> 
+                                <p>{{ session('added') }} </p>
+                            </div>
+                        @endif
                             <label for='toBuy' class='control-label col-sm-6'>Quantity:</label>
                             <input class='form-control quantityInput col-sm-6' type='number' id='toBuy' name='toBuy' value='1' max='{{ $productQuantity }}' step='1' min='1'>
                         </div>
                         <div class='row addC'>
+                            <input type='text' id='productID' name='productID' value="{{ $productID }}" class='form-control hidden'/>
                             <input class='btn btn-color productSubmit' type='submit' name='add' value='Add to Cart' />
                         </div>
                     </div>

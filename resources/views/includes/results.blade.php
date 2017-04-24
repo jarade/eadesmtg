@@ -11,22 +11,17 @@
         	</div>
     	@endif
 
-		@if(isset($type))
-			<h2 class='col-sm-12'>Product: {{ ProductType::where('typeID', '=', $type)->first()->type }}</h2>
-			@each('includes.product', Product::where('typeID' , $type)->get(), 'product')
-		@else
-			@if(session('search'))
-				@if(session('term'))
-					<h2 class='col-sm-12'>Search Results - {{ session('term') }}</h2>
-				
-					@each('includes.product', session('search'), 'product')
-				@endif
-			@else
-	        	@if (!session('status'))
-	        		<h2 class='col-sm-12'>All Products</h2>
-		            @each('includes.product', Product::all(), 'product')
-		        @endif
-		    @endif
-        @endif
-    </div>    
+    	@if(session('search'))
+			@if(session('term'))
+				<h2 class='col-sm-12'>Search Results - {{ session('term') }}</h2>
+			
+				@each('includes.product', session('search'), 'product')
+			@endif
+		@endif
+    </div>
+    <div class='row'>
+	    @if(session('search'))
+	    	{!! session('search')->render() !!}
+	    @endif
+    </div>
 </div>

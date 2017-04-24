@@ -24,7 +24,7 @@ class CartController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**
@@ -104,9 +104,12 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         session()->pull('cart.' . $id);
         return back()->with('status', "removed item");
+    }
+
+    public function checkout(){
+        return back()->with('status', "You have no Cart. Please add some products and try again.");
     }
 }

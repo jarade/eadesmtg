@@ -16,6 +16,14 @@ use File;
 
 class ProductController extends Controller
 {
+    private function getPaginationLimit(){
+        return 3;
+    }
+
+    private function setPaginationLimit(){
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +32,9 @@ class ProductController extends Controller
     public function index()
     {
         //
-        return view("search");
+        return redirect("product/search")
+            ->with('search', Product::paginate($this->getPaginationLimit()))
+            ->with('term', "All Products");
     }
 
     /**
@@ -131,17 +141,34 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        // If id sends to search page.
         if($id == 'search'){
-            return view('search', ['search' => "search"]);
+            return view('search')
+                ->with('search', Product::paginate($this->getPaginationLimit()))
+                ->with('term', "All Products");
         }
+
         // If $id is a type then show relevant products.
         foreach(ProductType::all() as $type){
-            if($type->type == $id){
-                return view('search', ['type' => $type->typeID]);
+            if($type->type == $id){/*
+                return view('search', ['type' => $type->typeID]);*/
+
+                return redirect('product/search')
+                    ->with('search', Product::where('typeID' , $type->typeID)
+                        ->paginate($this->getPaginationLimit()))
+                    ->with('term', "Type: " . $type->type);
             }
         }
 
-        return view('viewProduct', Product::find($id));
+        // If id is a product then view product
+        $product = Product::find($id);
+
+        if(isset($product)){
+            return view('viewProduct', $product);
+        }
+
+        // If id is not found then handle
+        abort(404); 
     }
 
     /**
@@ -186,6 +213,7 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
+
         // Filter by search criteria (in description if necessary)
         $something = $this->checkName($request->search, $request->searchIn);
 
@@ -199,8 +227,8 @@ class ProductController extends Controller
             $searchTerm = 'No search Criteria Selected. Showing all Results.';
         }
 
-        return redirect('product')
-            ->with('search', $results->get())
+        return redirect('product/search')
+            ->with('search', $results->paginate($this->getPaginationLimit()))
             ->with('term', $searchTerm)
             ->withInput();
 

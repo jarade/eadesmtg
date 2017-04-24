@@ -1,5 +1,10 @@
+	@font-face{
+		font-family: StickfontsMTG;
+		src: url(MAGIC.TTF) format("truetype");
+	}
 	html{
 		height: 100%;
+		
 	}
 	body {
 		margin: 0;
@@ -52,15 +57,22 @@
 		font-size: 20px;
 		font-weight: bold;
 		padding-left: 15px;
+		max-height: 100%;
+	}
+	#mytoptitle li a{
+		color: white;
+		font-family: StickfontsMTG; 
+		font-size: 32px;
+		text-decoration: none;
+	}
+	#mytoptitle li a:hover{
+		background-color: none;
 	}
 	#mytopnav li:hover:not(.active), 
 	.pull-left:hover:not(:active){
 		background-color: grey;
 		color: white;
 		text-decoration: none;
-	}
-	#mytoptitle:hover{
-		background-color: #835C3B;
 	}
 	.pull-left button:visited{
 		color: white;
@@ -128,7 +140,7 @@
 	}
 	.sidebar{
 		text-align: center;
-		width: 300px;
+		width: 320px;
 		padding: 10px;
 		float: left;
 	}
@@ -137,7 +149,6 @@
 	}
 	.mainContent{
 		margin-left:400px;
-		padding:auto;
 		max-width: 800px;
 	}
 	#search input, #search span{
@@ -288,9 +299,22 @@
 	.quantityInput{
 		width: 20%;
 	}
-
+	.cartQuantity{
+		text-indent: 50%;
+	}
 	.cartItem{
 		padding: 5px;
+	}
+	.updateCart, .sendContact{
+		margin: 5px 0;
+		width: 100%;
+	}
+	.pagination .active span{
+		background-color: black;
+	}
+	.clearfix {
+  		overflow: none;
+ 		zoom: 1;
 	}
 	@media screen and (min-width: 768px){
 		#titlediv{

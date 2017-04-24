@@ -1,5 +1,5 @@
-<div class="sidebar">
-	<img src="{{ asset('img/design/MTG_Logo.png') }}" alt="mtg logo">
+<div class="sidebar clearfix">
+	<a href="http://magic.wizards.com"><img src="{{ asset('img/design/MTG_Logo.png') }}" alt="mtg logo" ></a>
 	<h1>Browse Products</h1>
 	
 	<ul class="list-unstyled">

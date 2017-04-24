@@ -3,7 +3,14 @@
 @section('title', 'EadesMTG Products')
 
 @section('content')
+	
     <div class='content container text-left'>
+    @if (session('status'))
+            <div class="alert alert-success">
+                <p> {{ session('status') }} </p>
+            </div>
+        @endif
+        
 	    <form class='form-horizontal text-center' method='post' action='{{ url("product/search") }}'>
 	   	{{ csrf_field() }}
 	   		<legend><h1 class='text-left'>Search Form</h1></legend>

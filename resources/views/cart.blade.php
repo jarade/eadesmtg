@@ -15,7 +15,7 @@
             </div>
         @endif
     	<div>
-    		<legend>Shopping Cart</legend>
+    		<legend><h1>Shopping Cart</h1></legend>
     		<form class='row col-sm-12'>
     			<div class='col-sm-2 text-center'>
     				<h3>Remove Item</h3>
@@ -43,7 +43,12 @@
                 @each('includes.cartProduct', $arr, 'session')
 
             </div>
-             <hr>   
+            <hr>
+            <div class='row col-sm-12'>
+                <a href="{{ url('cart/checkout') }}">
+                    <input class='btn btn-color' type="button" value="Checkout">
+                </a>
+            </div>
     	</div>
     </div>
 @endsection

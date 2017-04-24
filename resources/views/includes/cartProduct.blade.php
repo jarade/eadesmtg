@@ -25,9 +25,9 @@
 		<form method='post' action='{{ url("cart/" . $ses->get("id")) }}'>
 		{{ csrf_field() }}
 		{{ method_field('PUT') }}
-			<input required class='form-control' type='number' min='0' step='1' max="{{ $product->productQuantity }}" name='toBuy' value='{{ $ses->get("quantity") }}'>
-			<input class='btn btn-color' type='submit' value='Update'>
+			<p>Max: {{ $product->productQuantity }}</p>
+			<input required class='form-control cartQuantity' type='number' min='0' step='1' max="{{ $product->productQuantity }}" name='toBuy' value='{{ $ses->get("quantity") }}'>
+			<input class='btn btn-color updateCart' type='submit' value='Update'>
 		</form>
-		<p>Max: {{ $product->productQuantity }}</p>
 	</div>
 </div>

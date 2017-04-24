@@ -6,7 +6,7 @@
     <div class='content container'>
       <form class="form-horizontal" action="mailto:jarrod.eades@hotmail.com" method="post" enctype="text/plain">
         {{ csrf_field() }}
-        <fieldset>
+        
           <legend><h1>Contact Form</h1></legend>
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="name">Name: </label>
@@ -30,10 +30,10 @@
              
             </div>
           </div>
-        </fieldset>
-        <div class="buttons">
-          <div class="pull-right">
-            <input class="btn btn-color" type="submit" value="Send" />
+        <div class="buttons row">
+          <div class="col-sm-6"></div>
+          <div class="col-sm-6">
+            <input class="btn btn-color sendContact" type="submit" value="Send" />
           </div>
         </div>
       </form>
