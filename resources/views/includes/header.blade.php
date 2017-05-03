@@ -11,7 +11,7 @@
 
         <li id="contactlink" class="{{ Request::is('contact') ? 'active' : '' }}"><a href="{{ url('contact') }}" class="fa fa-phone"><strong class="hiddenHeadings">Contact Us</strong></a> </li>
 
-        <li id="searchlink" class="{{ Request::is('product') ? 'active' : '' }}"><a href="{{url('product')}}" title="Search" class="fa fa-search"><strong class="hiddenHeadings">Search</strong></a></li>
+        <li id="searchlink" class="{{ Request::is('product') ? 'active' : '' }} {{ Request::is('product/search') ? 'active' : '' }}"><a href="{{url('product')}}" title="Search" class="fa fa-search"><strong class="hiddenHeadings">Search</strong></a></li>
 
         <li id="cartlink" class="{{ Request::is('cart') ? 'active' : '' }}"><a href="{{url('cart')}}" title="Shopping Cart" class="fa fa-shopping-cart"><strong class="hiddenHeadings">Shopping Cart</strong></a></li>
         

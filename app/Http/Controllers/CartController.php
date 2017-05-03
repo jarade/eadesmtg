@@ -56,7 +56,7 @@ class CartController extends Controller
      */
     public function show($id)
     {
-        return view('product/'.$id);
+        return view('product/'. $id);
     }
 
     /**
@@ -80,7 +80,6 @@ class CartController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::find($id);
-
         $productQuantity = (int)$product->productQuantity;
         $toBuyQuantity = (int)$request->toBuy;
         $validQuantity = ($productQuantity >= $toBuyQuantity);
@@ -109,7 +108,7 @@ class CartController extends Controller
         return back()->with('status', "removed item");
     }
 
-    public function checkout(){
-        return back()->with('status', "You have no Cart. Please add some products and try again.");
+    public function receipt(Request $request){
+        return view('receipt');
     }
 }

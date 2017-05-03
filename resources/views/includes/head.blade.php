@@ -34,3 +34,4 @@
 
 <link rel="stylesheet" href="{{ asset('css/stylesheet.css') }}" type="text/css"> 
 
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>

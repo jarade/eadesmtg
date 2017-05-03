@@ -21,7 +21,7 @@
     </div>
     <div class='row'>
 	    @if(session('search'))
-	    	{!! session('search')->render() !!}
+	    	{!! session('search')->links() !!}
 	    @endif
     </div>
 </div>

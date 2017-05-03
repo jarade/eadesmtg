@@ -3,7 +3,9 @@
   
     $ses = collect($session[0]);
     $product = Product::find($ses->get('id'));
-   
+   	
+	session()->put('totalPrice', session('totalPrice') + 
+		($product->productPrice * $ses->get("quantity")));
 @endphp
 
 <div class='cartItem row col-sm-12'>

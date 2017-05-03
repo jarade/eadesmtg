@@ -33,11 +33,9 @@ Route::resource('product', 'ProductController');
 // Life Counter
 Route::resource('life', 'LifeCounter');
 
-// Checkout
-Route::get('cart/checkout', 'CartController@checkout')->name('cart.checkout');
 //Shopping Cart
+Route::post('cart/receipt', 'CartController@receipt')->name('cart.receipt');
 Route::resource('cart', 'CartController');
-
 
 Route::post('/checkSession', function(){
 	session_start();
@@ -56,3 +54,4 @@ Route::post('/checkSession', function(){
 		return url('life');
 	}
 });
+

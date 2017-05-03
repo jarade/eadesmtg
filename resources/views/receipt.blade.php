@@ -8,8 +8,6 @@
 	use App\Product;
 
     session()->forget('totalPrice');
-    session()->put('postage', 5);
-    session()->put('totalPrice', session('postage'));
 @endphp
     
     <div class='content container'>
@@ -48,9 +46,6 @@
 
             </div>
             <hr>
-            <div class='row col-sm-11 pull-right'>
-                @include('includes.paypal')
-            </div>
     	</div>
     </div>
 @endsection

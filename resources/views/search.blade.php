@@ -29,7 +29,10 @@
 		    	<input id='searchButton' class='btn btn-color col-sm-11' type="submit" value="Search"/>
 		    </div>
 	    </form>
-	    
-	    @include('includes.results')
+	    @if(session('term'))
+	    	@include('includes.results')
+	    @else
+	    	@include('includes.defaultSearch')
+	    @endif
     </div>
 @endsection

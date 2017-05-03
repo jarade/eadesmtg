@@ -16,12 +16,14 @@ use File;
 
 class ProductController extends Controller
 {
+    public $paginationLimit = 5;
+
     private function getPaginationLimit(){
-        return 3;
+        return $this->paginationLimit;
     }
 
-    private function setPaginationLimit(){
-
+    private function setPaginationLimit($newValue){
+        $this->paginationLimit = $newValue;
     }
 
     /**
@@ -32,9 +34,10 @@ class ProductController extends Controller
     public function index()
     {
         //
-        return redirect("product/search")
+        return view("search")
             ->with('search', Product::paginate($this->getPaginationLimit()))
-            ->with('term', "All Products");
+            ->with('term', "All Products")
+            ->with('plim', $this->getPaginationLimit());
     }
 
     /**
@@ -143,9 +146,7 @@ class ProductController extends Controller
     {
         // If id sends to search page.
         if($id == 'search'){
-            return view('search')
-                ->with('search', Product::paginate($this->getPaginationLimit()))
-                ->with('term', "All Products");
+            return $this->index();
         }
 
         // If $id is a type then show relevant products.
@@ -153,7 +154,7 @@ class ProductController extends Controller
             if($type->type == $id){/*
                 return view('search', ['type' => $type->typeID]);*/
 
-                return redirect('product/search')
+                return redirect('product')
                     ->with('search', Product::where('typeID' , $type->typeID)
                         ->paginate($this->getPaginationLimit()))
                     ->with('term', "Type: " . $type->type);
@@ -227,7 +228,7 @@ class ProductController extends Controller
             $searchTerm = 'No search Criteria Selected. Showing all Results.';
         }
 
-        return redirect('product/search')
+        return redirect('product')
             ->with('search', $results->paginate($this->getPaginationLimit()))
             ->with('term', $searchTerm)
             ->withInput();

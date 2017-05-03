@@ -4,7 +4,6 @@
 	}
 	html{
 		height: 100%;
-		
 	}
 	body {
 		margin: 0;
@@ -315,6 +314,9 @@
 	.clearfix {
   		overflow: none;
  		zoom: 1;
+	}
+	.logo-paypal-silver{
+		background-color: black;
 	}
 	@media screen and (min-width: 768px){
 		#titlediv{
