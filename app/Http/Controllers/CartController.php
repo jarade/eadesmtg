@@ -107,8 +107,4 @@ class CartController extends Controller
         session()->pull('cart.' . $id);
         return back()->with('status', "removed item");
     }
-
-    public function receipt(Request $request){
-        return view('receipt');
-    }
 }

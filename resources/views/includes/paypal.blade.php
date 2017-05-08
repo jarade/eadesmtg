@@ -18,10 +18,15 @@
 <div id="thanks" style="display:none">
     Thanks, <span id="thanksname"></span>!
 </div>
+@php
+    $cartArr = session()->get('cart');
+    
+@endphp
+{{ json_encode($cartArr) }}
 <script>
-
+    var json = "{{ json_encode($cartArr) }}";
+    
     // Render the PayPal button
-
     paypal.Button.render({
 
         // Set your environment
@@ -105,7 +110,24 @@
                         document.querySelector('#confirm').style.display = 'none';
                         document.querySelector('#thanks').style.display = 'block';
 
-                        window.location.href = "{{ url('cart/receipt') }}";
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: "receipt",
+                            dataType: 'json',
+                            data: {
+                                items: json
+                            },
+                            success: function(data){
+                                window.location.href = "{{ url('/receipt') }}";
+                            }
+                        });
+                        
                     });
                 });
             });

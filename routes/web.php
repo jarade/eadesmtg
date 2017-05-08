@@ -34,8 +34,8 @@ Route::resource('product', 'ProductController');
 Route::resource('life', 'LifeCounter');
 
 //Shopping Cart
-Route::post('cart/receipt', 'CartController@receipt')->name('cart.receipt');
 Route::resource('cart', 'CartController');
+Route::resource('receipt', 'ReceiptController');
 
 Route::post('/checkSession', function(){
 	session_start();
