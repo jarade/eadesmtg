@@ -24,6 +24,7 @@ class ProductController extends Controller
 
     private function setPaginationLimit($newValue){
         $this->paginationLimit = $newValue;
+        session()->put('paglimit', $this->paginationLimit);
     }
 
     /**
@@ -33,11 +34,17 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-        return view("search")
-            ->with('search', Product::paginate($this->getPaginationLimit()))
-            ->with('term', "All Products")
-            ->with('plim', $this->getPaginationLimit());
+        session()->put('paglimit', $this->getPaginationLimit());
+
+        if(!session()->has('results')){
+            session()->flash('results', Product::paginate(3));
+        }
+
+        if(!session()->has('term')){
+            session()->flash('term', "All Products");
+        }
+
+        return view("search");
     }
 
     /**
@@ -214,7 +221,6 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
-
         // Filter by search criteria (in description if necessary)
         $something = $this->checkName($request->search, $request->searchIn);
 
@@ -228,10 +234,10 @@ class ProductController extends Controller
             $searchTerm = 'No search Criteria Selected. Showing all Results.';
         }
 
-        return redirect('product')
-            ->with('search', $results->paginate($this->getPaginationLimit()))
-            ->with('term', $searchTerm)
-            ->withInput();
+        session()->flash('term', $searchTerm);
+        session()->flash('results', $results->paginate(5));
+
+        return back()->withInput();
 
         //return view('search', ['search' => $results->get(), 'term' => $searchTerm]);
     }

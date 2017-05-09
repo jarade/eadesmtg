@@ -3,13 +3,21 @@
 @section('title', 'EadesMTG Products')
 
 @section('content')
-	
+	@php
+		if(count(old()) > 0){
+			session()->flash('old', old());
+		}
+
+		session()->keep(['results','term', 'old']);
+
+	@endphp
+
     <div class='content container text-left'>
-    @if (session('status'))
-            <div class="alert alert-success">
-                <p> {{ session('status') }} </p>
-            </div>
-        @endif
+	    @if (session('status'))
+	        <div class="alert alert-success">
+	            <p> {{ session('status') }} </p>
+	        </div>
+	    @endif
         
 	    <form class='form-horizontal text-center' method='post' action='{{ url("product/search") }}'>
 	   	{{ csrf_field() }}
@@ -29,10 +37,8 @@
 		    	<input id='searchButton' class='btn btn-color col-sm-11' type="submit" value="Search"/>
 		    </div>
 	    </form>
-	    @if(session('term'))
-	    	@include('includes.results')
-	    @else
-	    	@include('includes.defaultSearch')
-	    @endif
+
+	    @include('includes.defaultSearch')
+    
     </div>
 @endsection

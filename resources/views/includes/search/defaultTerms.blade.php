@@ -4,7 +4,7 @@
 	    	<label class='control-label text-left' for="search">Search: </label> 
 	    </div>
 	    <div class='col-sm-10'>
-	    	<input class='form-control' type="text" id='search' name="search" placeholder="Enter your search..." value="{{ old('search') }}"/>
+	    	<input class='form-control' type="text" id='search' name="search" placeholder="Enter your search..." value="{{ (session('old')) ? session('old')['search'] : '' }}"/>
 	    </div>
  	</div>
 
@@ -14,7 +14,13 @@
 	    	<label class='control-label' for="searchIn">Search in product description: </label>
 	    </div>
 	    <div class='col-sm-2 pull-right'>
-	   		<input class='form-control' type="checkbox" id='searchIn' name="searchIn" value="checked" {{ old('searchIn') }}/>
+	   		<input class='form-control' type="checkbox" id='searchIn' name="searchIn" value="checked" {{ 
+	   			session('old') ? 
+	   				( array_key_exists('searchIn', session('old')) ? 
+	   					session('old')['searchIn'] 
+	   				: '' ) 
+	   			: '' 
+	   			}}/>
 	    </div>
     </div>
 </div>
@@ -24,9 +30,9 @@
 	<div class='col-sm-2'></div>
 	<div class='col-sm-9'> 
 	    <select class='form-control' name="type" onchange="showSearchCriteria(this)">
-	    	<option value="0" {{ old('type') == 0 ? 'selected' : "" }}>All Product Types</option>
-	    	<option value="1" {{ old('type') == 1 ? 'selected' : "" }}>Accessories Only</option>
-	    	<option value="2" {{ old('type') == 2 ? 'selected' : "" }}>Cards Only</option>
+	    	<option value="0" {{ session('old') ? (session('old')['type'] == 0 ? 'selected' : "") : '' }}>All Product Types</option>
+	    	<option value="1" {{ session('old') ? (session('old')['type'] == 1 ? 'selected' : "") : '' }}>Accessories Only</option>
+	    	<option value="2" {{ session('old') ? (session('old')['type'] == 2 ? 'selected' : "") : '' }}>Cards Only</option>
 	    </select>
     </div>
 </div>
@@ -36,7 +42,6 @@
 		// hide all criterias.
 		$('#searchAcc').addClass('hidden');
 		$('#searchCard').addClass('hidden');
-		console.log(parseInt(option.value));
 
 		// Show the relevant Criteria
 		switch(parseInt(option.value)){

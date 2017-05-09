@@ -121,9 +121,11 @@
                             url: "receipt",
                             dataType: 'json',
                             data: {
-                                items: json
+                                items: json,
+                                postage: {{ session('postage') }}
                             },
                             success: function(data){
+                                console.log(data);
                                 window.location.href = "{{ url('/receipt') }}";
                             }
                         });

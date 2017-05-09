@@ -22,7 +22,9 @@ Route::get('contact', function () {
 	return view('contact');
 });
 
-
+Route::get('/sessionRefresh', function(){
+	session()->flush();
+});
 /*Route::get('/db', function(){
 	return DB::select('show tables;');
 });*/

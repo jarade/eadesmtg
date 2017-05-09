@@ -11,17 +11,16 @@
         	</div>
     	@endif
 
-    	@if(session('search'))
-			@if(session('term'))
-				<h2 class='col-sm-12'>Search Results - {{ session('term') }}</h2>
-			
-				@each('includes.product', session('search'), 'product')
-			@endif
+    	@if(session('results'))
+			<h2 class='col-sm-12'>Search Results - {{ session('term') }}</h2>
+		
+			@each('includes.product', session('results'), 'product')
+	
 		@endif
     </div>
     <div class='row'>
-	    @if(session('search'))
-	    	{!! session('search')->links() !!}
+	    @if(session('results'))
+	    	{!! session('results')->links() !!}
 	    @endif
     </div>
 </div>

@@ -2,19 +2,18 @@
     use App\Product;
     use App\ProductType;
 
-
-	$search = Product::paginate($plim);
-	$term = "All Products";
+	session()->put('pagLimit', 5);
 @endphp
 
 <div id='results' class='row'>
 	<div class='row'>
-    	<h2 class='col-sm-12'>Search Results - {{ $term }}</h2>
+    	<h2 class='col-sm-12'>Search Results - {{ session('term') }}</h2>
 		
-		@each('includes.product', $search, 'product')
+		@each('includes.product', session('results'), 'product')
 
     </div>
+
     <div class='row'>
-	    {!! $search->links() !!}
+    	{{ session('results')->links() }}
     </div>
 </div>
