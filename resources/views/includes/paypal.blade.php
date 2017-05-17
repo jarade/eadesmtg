@@ -1,3 +1,6 @@
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
 <div id="paypal-button-container" class="row pull-right">
         <p>Postage: <b>${{ number_format(session('postage'), 2) }}</b></p>
         <p>Total: <b>${{ number_format(session('totalPrice'), 2) }}</b></p>

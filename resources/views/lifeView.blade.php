@@ -3,14 +3,16 @@
 @section('title', 'EadesMTG')
 
 @section('content')
-	@include('includes.subnav')
-
-	<div class='players row'>
 	@php
 		use App\Player;
 		use App\Providers\sResponse;
 		session_start();
+	@endphp
 
+	@include('includes.subnav')
+
+	<div class='players row'>
+	@php
 		if(isset($_SESSION['session'])){
 			$players = App\Player::all()->where('sessionID', '=', $_SESSION['session']);
 

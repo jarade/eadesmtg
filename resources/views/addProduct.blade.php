@@ -2,6 +2,8 @@
 
 @section('title', 'EadesMTG')
 
+<script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
+
 @section('content')
 
 <script>

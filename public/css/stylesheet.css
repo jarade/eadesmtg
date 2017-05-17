@@ -44,7 +44,7 @@
 	#mytopnav li{
 		cursor: pointer;
 	}
-	#mytoptitle li, #mytopnav li a, .pull-left button{
+	#mytoptitle li, #mytopnav li a, .pull-left button, #sessionDetails{
 	    display: block;
 	    color: white;
 	    min-height: 20px;
@@ -317,6 +317,39 @@
 	}
 	.logo-paypal-silver{
 		background-color: black;
+	}
+	#sessionDetails{
+		float: left;
+		margin: 0;
+		text-indent: 10%;
+	}
+	.pagination li a{
+		background-color: #835C3B;
+		color: white;
+	}
+	.pagination li a:hover{
+		background-color: #800000;
+		color: white;
+	}
+	.pagination .disabled span:hover{
+		background-color: #800000;
+		color: white;
+	}
+	.pagination .disabled span{
+		background-color: #800000;
+		color: white;
+	}
+	.pagination .active span:hover{
+		background-color: #800000;
+		color: white; 
+		border-color: #FFF;
+		cursor: not-allowed;
+	}
+	.pagination .active span{	
+		background-color: #800000;
+		color: white; 
+		border-color: #FFF;
+
 	}
 	@media screen and (min-width: 768px){
 		#titlediv{

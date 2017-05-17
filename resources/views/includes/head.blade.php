@@ -26,12 +26,8 @@
 
 <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
 
-<script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
-
-
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <link rel="stylesheet" href="{{ asset('css/stylesheet.css') }}" type="text/css"> 
 
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>

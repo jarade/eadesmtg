@@ -7,9 +7,6 @@
 		<script>
 			function addPlayer(event){
 				event.preventDefault();
-
-				
-
 				sendData(null, 3);
 			}
 			function removePlayer(event, player){

@@ -1,8 +1,10 @@
 function lifeCounter(theaction){
 	event.preventDefault();
 	$.confirm({
-	    title: '<legend>Life Counter!</legend>',
-	    content: "<label for='sesId' class='control-label'>Session Id:</label>"
+	    title: '<legend>Join Your Group!</legend>',
+	    content: "<p>Already have a playgroup, then get the session id and password from a friend.</p>"
+	    + "<p> These details can be found at the top of the page.</p>"
+	    + "<label for='sesId' class='control-label'>Session Id:</label>"
 	    + "<input id='sesId' type='number' min='1' class='form-control'>"
 	    + "<p class='text-danger sessionIdtxt' style='display:none'></p><br> "
 	    + "<label for='pass' class='control-label'> Password: </label>"
@@ -12,10 +14,12 @@ function lifeCounter(theaction){
 	    backgroundDismiss: true,
 	    useBootstrap: false,
 	    closeIcon: true,
+	    autoclose: false,
 	    buttons: {
             Login: {
-            	text: "Login",
+            	text: "Join Playgroup",
             	btnClass: "btn-warning jqueryconfirm",
+
             	action: function(){
 	            	if(!checkFieldsLogin(this)){
 	            		return false;
@@ -35,25 +39,29 @@ function lifeCounter(theaction){
 	            			pass: this.$content.find("#pass").val()
 	            		},
 	            		success: function(data){
-	            			window.location.href = data;
+	            			if(data == "password"){
+            					return false;
+	            			}else{
+		            			window.location.href = data;
+		            		}
 	            		}
 	            	});
 				}
             },
             Create: {
-                text: 'Create New Session',
+                text: 'Create a New Playgroup',
                 btnClass: 'btn-warning jqueryconfirm',
                 closeIcon: true,
                 action: function () {
 	                $.confirm({
-					    title: '<legend>Players?</legend>',
+					    title: '<legend>Create a session for you and your friends!</legend>',
 					    content: "<label for='email' class='control-label'>Email:</label>"
 					    + "<input id='email' name='email' type='email' class='form-control' regex=''/>"
 					    + "<p class='text-danger emailtxt' style='display:none'></p><br>"
 					    + "<label for='playerNum' class='control-label'>Number of Players:</label>"
 					    + "<input id='playerNum' type='number' min='1' step='1' class='form-control'>"
 					    + "<p class='text-danger playernumtxt' style='display:none'></p><br>"
-					    + "<label for='newpass' class='control-label'>Password:</label>"
+					    + "<label for='newpass' class='control-label'>Password: (please note that this is needed to pass to people who wish to join the session)</label>"
 					    + "<input id='newpass' type='password' class='form-control'>"
 					    + "<p class='text-danger newpasstxt' style='display:none'></p>",
 					    escapeKey: true,
@@ -62,7 +70,7 @@ function lifeCounter(theaction){
 					    closeIcon: true,
 					    buttons: {
 					    	Accept: {
-						    	text: "Confirm",
+						    	text: "Create",
 				            	btnClass: "btn-warning jqueryconfirm",
 				            	action: function(){
 						    		if(!checkFieldsCreate(this)){

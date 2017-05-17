@@ -16,7 +16,7 @@ use File;
 
 class ProductController extends Controller
 {
-    public $paginationLimit = 5;
+    public $paginationLimit = 6;
 
     private function getPaginationLimit(){
         return $this->paginationLimit;
@@ -36,15 +36,45 @@ class ProductController extends Controller
     {
         session()->put('paglimit', $this->getPaginationLimit());
 
-        if(!session()->has('results')){
-            session()->flash('results', Product::paginate(3));
+        if(!session()->exists('results')){
+            session()->flash('results', Product::all());
         }
 
-        if(!session()->has('term')){
-            session()->flash('term', "All Products");
+        if(!session()->exists('terms')){
+            session()->flash('terms', "All Products");
         }
 
         return view("search");
+    }
+
+    /**
+     * Show the results of a search.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+    */
+    public function search(Request $request)
+    {
+
+        // Filter by search criteria (in description if necessary)
+        $something = $this->checkName($request->search, $request->searchIn);
+
+        // Filter the results by the type
+        $something = $this->checkType($something['searchTerm'], $something['results'], $request->type, $request->accessoryTypes, $request->cardType, $request->edition);
+
+        $searchTerm = $something['searchTerm'];
+
+        if($searchTerm == ''){
+            $searchTerm = 'No search Criteria Selected. Showing all Results.';
+        }
+
+        $results = $something['results'];
+        session()->flash('terms', $searchTerm);
+        session()->flash('results', $results->get());
+
+        $_GET['page'] = 1;
+        return redirect('product')
+                ->withInput();
     }
 
     /**
@@ -138,6 +168,8 @@ class ProductController extends Controller
             array_push($message, 'Images have successfully been uploaded.');
         }
 
+        session()->put('pagLimit', 3);
+
         return redirect('product/create')
                 ->with('status', $message)
                 ->withInput();
@@ -160,6 +192,8 @@ class ProductController extends Controller
         foreach(ProductType::all() as $type){
             if($type->type == $id){/*
                 return view('search', ['type' => $type->typeID]);*/
+
+                session()->flash('results', Product::where('typeID' , $type->typeID));
 
                 return redirect('product')
                     ->with('search', Product::where('typeID' , $type->typeID)
@@ -213,34 +247,7 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Show the results of a search.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        // Filter by search criteria (in description if necessary)
-        $something = $this->checkName($request->search, $request->searchIn);
-
-        // Filter the results by the type
-        $something = $this->checkType($something['searchTerm'], $something['results'], $request->type, $request->accessoryTypes, $request->cardType, $request->edition);
-
-        $searchTerm = $something['searchTerm'];
-        $results = $something['results'];
-
-        if($searchTerm == ''){
-            $searchTerm = 'No search Criteria Selected. Showing all Results.';
-        }
-
-        session()->flash('term', $searchTerm);
-        session()->flash('results', $results->paginate(5));
-
-        return back()->withInput();
-
-        //return view('search', ['search' => $results->get(), 'term' => $searchTerm]);
-    }
+ 
 
     /***
     **  checkname(string, string) - Get the results and searchTerm of the search criteria provided.

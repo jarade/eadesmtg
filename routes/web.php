@@ -48,12 +48,16 @@ Route::post('/checkSession', function(){
 	if(Request::ajax()){
 		$session = App\Session::select('sessionID', 'password')
 							->where('sessionID', $_POST['id'])
-							->get();
+							->where('password', $_POST['pass'])
+							->first();
 		
-		
-	    $_SESSION['session'] = $_POST['id'];
+		if($session->count = 1){
+	    	$_SESSION['session'] = $_POST['id'];
 	
-		return url('life');
+			return url('life');
+		}
+
+		return "password";
 	}
 });
 
