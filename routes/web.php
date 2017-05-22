@@ -50,14 +50,15 @@ Route::post('/checkSession', function(){
 							->where('sessionID', $_POST['id'])
 							->where('password', $_POST['pass'])
 							->first();
-		
-		if($session->count = 1){
-	    	$_SESSION['session'] = $_POST['id'];
 	
-			return url('life');
+		if(!is_null($session)){
+			if($session->count = 1){
+		    	$_SESSION['session'] = $_POST['id'];
+		
+				return url('life');
+			}
 		}
-
-		return "password";
+		return "incorrect";
 	}
 });
 

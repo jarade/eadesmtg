@@ -3,11 +3,46 @@
 @section('title', 'EadesMTG')
 
 @section('content')
+
+@php
+	use App\Player;
+	use App\Providers\sResponse;
+	session_start();
+@endphp
+
 	@include('includes.subnav')
 		<script>
-			function addPlayer(event){
+			function addPlayer(){
 				event.preventDefault();
-				sendData(null, 3);
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
+				});
+					
+            	$.ajax({
+            		type: "PUT",
+            		url: "life.update",
+            		data: {
+            			player: 0,
+            			change: 3,
+            			sessionID: {{ $_SESSION['session'] }}
+            		},
+            		success: function(data){
+            			$(".mainContent").append(newPlayer(data));
+            		}
+            	});
+
+            	
+			}
+			function newPlayer(player){
+				return "<form id='player" +  player.playerID + "' class='form-horizontal playerDiv col-sm-4'>"
+					+ "<input value='" + player.playerName + "' class='form-control' onchange='changeName(this.value, " + player + ")' />"
+					+ "<input type='number' step='1' value='" + player.playerLife + "' class='form-control playerLife' onchange='changeLife(this.value, " + player + ")' />"
+					+ "<input class='btn btn-color' type='submit' value='+' onclick='addLife(event, " + player + ")' />"
+					+ "<input class='btn btn-color' type='submit' value='-' onclick='takeLife(event, " + player + ")' />"
+					+ "<input class='btn btn-color' type='submit' value='Remove Player' onclick='removePlayer(event, " + player + ")' />"
+				+ "</form>";
 			}
 			function removePlayer(event, player){
 				event.preventDefault();
@@ -77,7 +112,7 @@
 			</form>
 			<br>
 			<form class="form-horizontal">
-				<input class="btn btn-color" type="submit" value="Add Player" />
+				<input class="btn btn-color" type="submit" value="Add Player" onclick='addPlayer()' />
 
 				<input class="btn btn-color" type="submit" value="Refresh" />
 			</form>
@@ -89,16 +124,13 @@
 		<div class='mainContent'>
 
 			@php
-				use App\Player;
-				use App\Providers\sResponse;
-				session_start();
 
 				if(isset($_SESSION['session'])){
 
 					$players = App\Player::all()->where('sessionID', '=', $_SESSION['session']);
 
 					foreach($players as $player){
-						echo "<form id='player" .  $player->playerID . "' class='form-horizontal playerDiv'>";
+						echo "<form id='player" .  $player->playerID . "' class='form-horizontal playerDiv col-sm-4'>";
 
 							echo "<input value='" . $player->playerName . "' class='form-control' onchange='changeName(this.value, ". $player . ")' />";
 

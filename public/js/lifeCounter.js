@@ -1,9 +1,10 @@
 function lifeCounter(theaction){
 	event.preventDefault();
-	$.confirm({
+	var login = $.confirm({
 	    title: '<legend>Join Your Group!</legend>',
 	    content: "<p>Already have a playgroup, then get the session id and password from a friend.</p>"
-	    + "<p> These details can be found at the top of the page.</p>"
+	    + "<p> These details can be found at the top of the page.</p>"	    
+	    + "<p class='text-danger errortxt' style='display:none'></p>"
 	    + "<label for='sesId' class='control-label'>Session Id:</label>"
 	    + "<input id='sesId' type='number' min='1' class='form-control'>"
 	    + "<p class='text-danger sessionIdtxt' style='display:none'></p><br> "
@@ -31,21 +32,28 @@ function lifeCounter(theaction){
 						}
 					});
 					
-	            	$.ajax({
+	            	var request = $.ajax({
 	            		type: "POST",
 	            		url: "checkSession",
 	            		data: {
 	            			id:this.$content.find('#sesId').val(), 
 	            			pass: this.$content.find("#pass").val()
-	            		},
-	            		success: function(data){
-	            			if(data == "password"){
-            					return false;
-	            			}else{
-		            			window.location.href = data;
-		            		}
 	            		}
-	            	});
+	            	})
+	            	
+	            	request.done(function (data){
+	            			if(data == 'incorrect'){
+	            				var newIn = login;
+	            				newIn.onContentReady =  (function(){
+	            					$('.errortxt').html('Your session ID and password are incorrect.Please check your details and try again.');
+	            					$('.errortxt').append("<br>");
+	            					$('.errortxt').append('If you don\'t have a session then please create a new playgroup.').slideDown(100);
+	            				});
+	            				newIn.open();
+	            			}else{
+	            				window.location.href = data;
+	            			}
+	            		});
 				}
             },
             Create: {
@@ -100,7 +108,7 @@ function lifeCounter(theaction){
 					});
                 }
             }
-        }
+        },
 	});
 }
 
