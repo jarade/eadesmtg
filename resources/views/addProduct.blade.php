@@ -258,7 +258,7 @@
 		</form>
     </div>
 
-    <script>
+<script>
    	function handleFileSelect(evt) {
 	    var files = evt.target.files; // FileList object
 		if(files.length > 0){
@@ -291,6 +291,70 @@
 	    $('#imageSources').val( $('#imageSources').val() + JSON.stringify(allImages));
 	}
 
-  document.getElementById('input-image').addEventListener('change', handleFileSelect, false);
+  	document.getElementById('input-image').addEventListener('change', handleFileSelect, false);
+
+  	function checkAdmin(){
+		var login = $.confirm({
+		    title: '<legend>Please login using your admin details.</legend>',
+		    content: "<p class='text-danger errortxt' style='display:none'></p>"
+		    + "<label for='user' class='control-label'>Admin Name:</label>"
+		    + "<input id='user' class='form-control'>"
+		    + "<p class='text-danger sessionIdtxt' style='display:none'></p><br> "
+		    + "<label for='password' class='control-label'> Password: </label>"
+		    + "<input id='password' type='password' class='form-control'>"
+		    + "<p class='text-danger passtxt' style='display:none'></p>",
+		    escapeKey: false,
+		    backgroundDismiss: false,
+		    useBootstrap: false,
+		    closeIcon: false,
+		    autoclose: false,
+		    buttons: {
+	            Login: {
+	            	text: "Check Admin",
+	            	btnClass: "btn-warning jqueryconfirm",
+
+	            	action: function(){
+
+		            	$.ajaxSetup({
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							}
+						});
+						
+						var entered = [this.$content.find('#user').val(), 
+										this.$content.find("#password").val()];
+
+		            	var request = $.ajax({
+		            		type: "POST",
+		            		url: "checkUser",
+		            		data: {
+		            			name: this.$content.find('#user').val(), 
+		            			password: this.$content.find("#password").val()
+		            		}
+		            	});
+		            	
+	            		request.done(function (data){
+	            			if(data == 'incorrect'){
+	            				var newIn = login;
+	            				newIn.onContentReady =  (function(){
+	            					$('.errortxt').html('Your name and/or password are incorrect.Please check your details and try again.').slideDown();
+
+	            					$('#user').val(entered[0]);
+	            					$('#password').val(entered[1]);
+	            				});
+
+	            				newIn.open();
+	            			}
+	            		});
+					}
+	            }
+	        }
+	    });
+  	}
+  	@if(session('loggedin'))
+  	@else
+  		checkAdmin();
+  	@endif
 </script>
+
 @endsection

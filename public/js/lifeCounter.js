@@ -42,18 +42,18 @@ function lifeCounter(theaction){
 	            	})
 	            	
 	            	request.done(function (data){
-	            			if(data == 'incorrect'){
-	            				var newIn = login;
-	            				newIn.onContentReady =  (function(){
-	            					$('.errortxt').html('Your session ID and password are incorrect.Please check your details and try again.');
-	            					$('.errortxt').append("<br>");
-	            					$('.errortxt').append('If you don\'t have a session then please create a new playgroup.').slideDown(100);
-	            				});
-	            				newIn.open();
-	            			}else{
-	            				window.location.href = data;
-	            			}
-	            		});
+            			if(data == 'incorrect'){
+            				var newIn = login;
+            				newIn.onContentReady =  (function(){
+            					$('.errortxt').html('Your session ID and password are incorrect.Please check your details and try again.');
+            					$('.errortxt').append("<br>");
+            					$('.errortxt').append('If you don\'t have a session then please create a new playgroup.').slideDown(100);
+            				});
+            				newIn.open();
+            			}else{
+            				window.location.href = data;
+            			}
+	            	});
 				}
             },
             Create: {

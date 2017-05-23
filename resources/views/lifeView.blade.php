@@ -11,13 +11,12 @@
 
 	@include('includes.subnav')
 
-	<div class='players row'>
+	<div class='players row text-center'>
 	@php
 		if(isset($_SESSION['session'])){
 			$players = App\Player::all()->where('sessionID', '=', $_SESSION['session']);
-
 			foreach($players as $player){
-				echo "<div class='playerDiv text-center col-xs-12 col-sm-6 col-md-4 col-lg-3'>";
+				echo "<div class='playerDiv center-block col-xs-12 col-sm-6 col-md-4 col-lg-3'>";
 
 					echo "<h1 class='playerName'>" . $player->playerName . "</h1>"; 
 

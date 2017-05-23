@@ -128,9 +128,21 @@ class LifeCounter extends Controller
                 break;
 
         }
-        return 'yay';
+        return 'successful update';
     }
 
+    public function newgame(Request $request){
+
+        $players = Player::where('sessionID', $request->session)
+                    ->get();
+
+        foreach($players as $player){
+            $player->playerLife = $request->totalLife;
+            $player->save();
+        }
+
+        return $this->show(1);
+    }
     /**
      * Remove the specified resource from storage.
      *

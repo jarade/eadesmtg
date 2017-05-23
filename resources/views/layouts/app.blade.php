@@ -8,7 +8,7 @@
         <div class="wrap">
             @include('includes.header')
 
-            <div>
+            <div class='container-fluid'>
                 @yield('content')
             </div>
 

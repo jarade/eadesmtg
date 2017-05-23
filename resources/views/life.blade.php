@@ -98,30 +98,38 @@
 		</script>
 
 	<div class="homeWrap">
-		<div class="sidebar">
-			<label for='lifeEdit' class='control-label'>Life Edit Value</label>
-			<input id='lifeEdit' type='number' value='1' min='-50' max='50' step='1' class='form-control'>
+		<div class="sidebar clearfix ">
+			<div class='row col-sm-12 center-block'>
+				<label for='lifeEdit' class='control-label'>Life Edit Value</label>
+				<input id='lifeEdit' type='number' value='1' min='-50' max='50' step='1' class='form-control'>
+			</div>
 
-
-			<form class="form-horizontal">
-				<label for='totalLife' class='control-label'>Total Life</label>
-
-				<input id='totalLife' type='number' value='20' min='1' step='1' class='form-control'>
-				<br>
-				<input class="btn btn-color" type="submit" value="Apply Life" />
+			<form action='{{ url("life/newGame") }}' method='POST' class="row form-horizontal row col-sm-12 center-block">
+			{{ csrf_field() }}
+				<hr>
+				<div class='row center-block'>
+					<input id='session' name='session' value='{{ $_SESSION['session'] }}' class='hidden'>
+					<label for='totalLife' class='control-label'>Starting Life Total</label>
+					<input id='totalLife' name='totalLife' type='number' value='20' min='1' step='1' class='form-control'>
+				</div></br>
+				<div class='row center-block'>
+					<input class="btn btn-color col-sm-12" type="submit" value="New Game" />
+				</div>
 			</form>
-			<br>
-			<form class="form-horizontal">
-				<input class="btn btn-color" type="submit" value="Add Player" onclick='addPlayer()' />
 
-				<input class="btn btn-color" type="submit" value="Refresh" />
-			</form>
-
+			<div class='row col-sm-12 center-block'>
+			<br><hr>
+				<form class="form-horizontal ">
+					<input class="btn btn-color col-sm-12" type="submit" value="Add Player" onclick='addPlayer()' />
+				</form>
+			</div>
+			<div class='row col-sm-12 center-block'>
 			<h1>Instructions</h1>
 			<p>The life edit value field is connected to the +/- buttons. The + button adds the value to the corrosponding life total while the - button takes the value away from the life total</p>
+			</div>
 		</div>
 
-		<div class='mainContent'>
+		<div class='mainContent clearfix center-block lifeEditContent'>
 
 			@php
 
@@ -130,17 +138,17 @@
 					$players = App\Player::all()->where('sessionID', '=', $_SESSION['session']);
 
 					foreach($players as $player){
-						echo "<form id='player" .  $player->playerID . "' class='form-horizontal playerDiv col-sm-4'>";
+						echo "<form id='player" .  $player->playerID . "' class='form-horizontal playerDiv playerDivEdit col-sm-4'>";
 
 							echo "<input value='" . $player->playerName . "' class='form-control' onchange='changeName(this.value, ". $player . ")' />";
 
 							echo "<input type='number' step='1' value='" . $player->playerLife . "' class='form-control playerLife' onchange='changeLife(this.value, ". $player . ")' />";
 
-							echo "<input class='btn btn-color' type='submit' value='+' onclick='addLife(event, " . $player . ")' />";
+							echo "<input class='btn btn-color plusminus' type='submit' value='+' onclick='addLife(event, " . $player . ")' />";
 
-							echo "<input class='btn btn-color' type='submit' value='-' onclick='takeLife(event, " . $player . ")' />";
+							echo "<input class='btn btn-color plusminus' type='submit' value='-' onclick='takeLife(event, " . $player . ")' />";
 
-							echo "<input class='btn btn-color' type='submit' value='Remove Player' onclick='removePlayer(event, " . $player . ")' />";
+							echo "<input class='btn btn-color pull-right' type='submit' value='Remove Player' onclick='removePlayer(event, " . $player . ")' />";
 						echo "</form>";
 					}
 				}else{
