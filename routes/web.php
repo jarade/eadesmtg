@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/reset', function(){
+	session()->forget('loggedin');
+	return back();
+});
 // Contact Us
 Route::get('contact', function () {
 	return view('contact');

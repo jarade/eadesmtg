@@ -99,7 +99,11 @@
 		}
 	}
 </script>
-	
+	<div class="subNav">
+		<ul>
+	    	<li id='logout'><a href="{{ url('/reset') }}"><strong>Logout</strong></a> </li>
+		</ul>
+	</div>
 	<div class='content container'>
 		<h1>Add Product</h1>
 

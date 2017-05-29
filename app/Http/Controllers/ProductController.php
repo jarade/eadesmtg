@@ -96,79 +96,86 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Check if each image is valid.
         $message = array();
+        if(session('loggedin')){
+            // Check if each image is valid.
+            
 
-        if(count($request->images) > 0){
-            $imagePath = public_path() . '\img\products\\';
-            $issue = false;
-            $images = array();
+            if(count($request->images) > 0){
+                $imagePath = public_path() . '\img\products\\';
+                $issue = false;
+                $images = array();
 
-            foreach($request->file('images') as $uploadedImage){
-                $fileName = $uploadedImage->getClientOriginalName();
+                foreach($request->file('images') as $uploadedImage){
+                    $fileName = $uploadedImage->getClientOriginalName();
+                    
+                    if (File::exists($imagePath . $fileName)){ 
+                        $issue = true;
+                        array_push($message, 'The image ' . $fileName . ' is already located in the products folder. Please check the folder and use a different name.');
+                    }else{
+                        array_push($images, $uploadedImage);
+                    }
+                }
+            }
+
+            $product = new Product;
+            $product->productName = $request->productName;
+            $product->productDescription = $request->description;
+            $product->productPrice = $request->price;
+            $product->productQuantity = $request->quantity; 
+            $product->typeID = $request->type;
+
+
+            if($request->type == 2){ // Card product type
+                $editions = new CardEdition;
+                $editions->cardEdition = $request->edition;    
                 
-                if (File::exists($imagePath . $fileName)){ 
-                    $issue = true;
-                    array_push($message, 'The image ' . $fileName . ' is already located in the products folder. Please check the folder and use a different name.');
-                }else{
-                    array_push($images, $uploadedImage);
-                }
-            }
-        }
-
-        $product = new Product;
-        $product->productName = $request->productName;
-        $product->productDescription = $request->description;
-        $product->productPrice = $request->price;
-        $product->productQuantity = $request->quantity; 
-        $product->typeID = $request->type;
-
-
-        if($request->type == 2){ // Card product type
-            $editions = new CardEdition;
-            $editions->cardEdition = $request->edition;    
-            
-            $cardTypes = array();
-            foreach(json_decode($request->types) as $type){
-                $cardType = new CardType;
-                $cardType->cardType = $type;
-                array_push($cardTypes, $cardType);
-            }
-        }
-
-        if(!$issue){
-            $product->save();
-
-            if($request->type == 2){
-                $editions->productID = $product->productID;
-                $editions->save();
-
-                foreach($cardTypes as $cardType){
-                    $cardType->productID = $product->productID;
-                    $cardType->save();
+                $cardTypes = array();
+                foreach(json_decode($request->types) as $type){
+                    $cardType = new CardType;
+                    $cardType->cardType = $type;
+                    array_push($cardTypes, $cardType);
                 }
             }
 
-            array_push($message, 'The Product is added successfully.');
+            if(!$issue){
+                $product->save();
+
+                if($request->type == 2){
+                    $editions->productID = $product->productID;
+                    $editions->save();
+
+                    foreach($cardTypes as $cardType){
+                        $cardType->productID = $product->productID;
+                        $cardType->save();
+                    }
+                }
+
+                array_push($message, 'The Product is added successfully.');
 
 
-            // Insert Images
-            foreach($images as $img){
-                $productImage = new ProductImage;
+                // Insert Images
+                foreach($images as $img){
+                    $productImage = new ProductImage;
 
-                $fileName = $img->getClientOriginalName();
-                $img->move($imagePath, $fileName);
+                    $fileName = $img->getClientOriginalName();
+                    $img->move($imagePath, $fileName);
 
-                $productImage->productID = $product->productID;
-                $productImage->productImage = $fileName;
+                    $productImage->productID = $product->productID;
+                    $productImage->productImage = $fileName;
 
-                $productImage->save();
+                    $productImage->save();
+                }
+                
+                array_push($message, 'Images have successfully been uploaded.');
             }
-            
-            array_push($message, 'Images have successfully been uploaded.');
+
+            session()->put('pagLimit', 3);
+
+        }else{
+            array_push($message, 'You don\'t have permission to this content. Please make sure you have javascript enabled and log in as an admin.');
         }
 
-        session()->put('pagLimit', 3);
 
         return redirect('product/create')
                 ->with('status', $message)
