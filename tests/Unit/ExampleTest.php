@@ -6,6 +6,8 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use Illuminate\Support\Facades\File;
+
 class ExampleTest extends TestCase
 {
     /**
@@ -15,6 +17,10 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $this->assertTrue(true);
+        $files = File::allFiles(base_path());
+        
+   		foreach ($files as $file){
+        	//$this->assert($file);
+		}
     }
 }
