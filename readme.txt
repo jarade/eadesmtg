@@ -22,3 +22,29 @@ Installation
 7. type 'php artisan key:generate'
 8. Start Xampp and open localhost/projectname/public.
 9. Should work. 
+
+Testing Variables
+Admin
+	name: Administrator
+	password : password
+PayPal
+	name: Shopping Spree
+	email: eadesmtgshopper@email.com
+	password: eightkey
+
+Future Plans - theres alot to do!
+	Change how the images upload works. Currently it only allows 1 image of a specific name. After using this, i don't like it. Also need to add a auto delete if no products are using the image.
+	Take out debug info
+	Shopping Cart - no items redirect to search page.
+	Get the Contact Us to send Mail using laravels mail.
+	Add a pagination value dropdown.
+	auto refresh in life counter app (both pages)
+	Life Counter history
+	Admin Edit products page
+	Save the shipping address of shopper to db.
+	auto delete products when not in stock
+	auto decrement products after purchase.
+	Home page sidebar new design.
+	Better Responsive layout
+
+

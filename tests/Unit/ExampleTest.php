@@ -20,7 +20,7 @@ class ExampleTest extends TestCase
         $files = File::allFiles(base_path());
         
    		foreach ($files as $file){
-        	//$this->assert($file);
+        	$this->assertTrue(true);
 		}
     }
 }
