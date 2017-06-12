@@ -55,17 +55,44 @@ class ProductController extends Controller
     */
     public function search(Request $request)
     {
+        if($request->searchType == "homeSearch"){
+            $searchTerm = $request->search;
+            $result = Product::where('productName', 'LIKE', '%' . $request->search . '%');
 
-        // Filter by search criteria (in description if necessary)
-        $something = $this->checkName($request->search, $request->searchIn);
+            $something = array('searchTerm' => $searchTerm, 'results' => $result);
 
-        // Filter the results by the type
-        $something = $this->checkType($something['searchTerm'], $something['results'], $request->type, $request->accessoryTypes, $request->cardType, $request->edition);
+            $results = $something['results'];
+            session()->flash('terms', $searchTerm);
+            session()->flash('results', $results->get());
 
-        $searchTerm = $something['searchTerm'];
+            $_GET['page'] = 1;
+            return redirect('product');
+        }else{
+            if($request->searchType == 'typeSearch'){
+                $searchTerm = ProductType::where('typeID', '=', $request->search)->pluck('type')->first();
+                $result = Product::where('typeID', '=', $request->search);
 
-        if($searchTerm == ''){
-            $searchTerm = 'No search Criteria Selected. Showing all Results.';
+                $something = array('searchTerm' => $searchTerm, 'results' => $result);
+
+                $results = $something['results'];
+                session()->flash('terms', $searchTerm);
+                session()->flash('results', $results->get());
+
+                $_GET['page'] = 1;
+                return redirect('product');
+            }else{
+                // Filter by search criteria (in description if necessary)
+                $something = $this->checkName($request->search, $request->searchIn);
+
+                // Filter the results by the type
+                $something = $this->checkType($something['searchTerm'], $something['results'], $request->type, $request->accessoryTypes, $request->cardType, $request->edition);
+
+                $searchTerm = $something['searchTerm'];
+
+                if($searchTerm == ''){
+                    $searchTerm = 'No search Criteria Selected. Showing all Results.';
+                }
+            }
         }
 
         $results = $something['results'];

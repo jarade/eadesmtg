@@ -26,7 +26,8 @@
 			    	]
 
 		    	</script>
-			    <div id="search" class="input-group">		    	
+			    <div id="search" class="input-group">		    
+			    	<input type="hidden" id="hidden" name="searchType" placeholder="Search" class="form-control input-lg" value='homeSearch'>	
 		  			<input type="text" id="searchProduct" name="search" placeholder="Search" class="form-control input-lg">
 		  			<span class="input-group-btn">
 		    			<input type="submit" class="btn btn-default btn-lg" value='Search'>
